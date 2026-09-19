@@ -1,0 +1,5 @@
+{
+  "name": "PINORA",
+  "description": "Offline-first Philippine Language Learning application for Botolan Sambal, Cebuano, and Ilocano with TTS, searchable dictionary, and dynamic progress XP and streak gamification.",
+  "requestFramePermissions": []
+}

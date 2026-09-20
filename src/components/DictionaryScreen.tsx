@@ -14,6 +14,8 @@ import {
 import { Word } from "../types";
 import { LANGUAGES, WORDS } from "../data";
 import { TtsManager } from "../utils/tts";
+import PageHeader from "./ui/PageHeader";
+import { playSfx } from "../utils/sfx";
 
 interface DictionaryScreenProps {
   key?: string;
@@ -38,7 +40,10 @@ const CATEGORIES = [
   "Verbs",
   "Questions",
   "Culture",
-  "Nouns"
+  "Nouns",
+  "Adjectives",
+  "Demonstratives",
+  "Grammar Words"
 ];
 
 export default function DictionaryScreen({
@@ -60,7 +65,9 @@ export default function DictionaryScreen({
     const matchesSearch = 
       word.word.toLowerCase().includes(searchQuery.toLowerCase()) ||
       word.meaning.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      word.pronunciation.toLowerCase().includes(searchQuery.toLowerCase());
+      word.pronunciation.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (word.variant || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (word.note || "").toLowerCase().includes(searchQuery.toLowerCase());
       
     const matchesCategory = selectedCategory === "All" || word.category === selectedCategory;
     
@@ -70,7 +77,7 @@ export default function DictionaryScreen({
   // Handle TTS
   const handlePlayWord = (word: Word) => {
     setPlayingWordId(word.wordId);
-    TtsManager.speak(word.word, undefined, () => {
+    TtsManager.speak(word.word.split(" / ")[0], undefined, () => {
       setPlayingWordId(null);
     });
   };
@@ -83,29 +90,10 @@ export default function DictionaryScreen({
       className="space-y-6"
       id="dictionary-container"
     >
-      {/* Header bar styling */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutral-200 pb-4 gap-3" id="dict-header-block">
-        <button
-          onClick={onBackToHome}
-          className="flex items-center gap-1.5 text-neutral-500 hover:text-neutral-900 transition-colors text-[10px] uppercase font-bold tracking-widest self-start"
-          id="dict-back-btn"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Dashboard
-        </button>
-
-        <div className="text-right">
-          <span className="text-[9px] uppercase font-mono tracking-widest text-neutral-500 block font-bold">
-            Interactive Lexicon
-          </span>
-          <span className="text-sm font-bold text-neutral-900 font-display">
-            Offline Vocabulary Database
-          </span>
-        </div>
-      </div>
+      <PageHeader title="Dictionary" subtitle="Words, meanings and sounds. Works offline." />
 
       {/* Language tab compare selectors */}
-      <div className="bg-neutral-50 p-1 rounded flex gap-1 border border-neutral-200" id="language-tab-container">
+      <div className="bg-neutral-50 p-1 rounded-xl flex gap-1 border border-neutral-200" id="language-tab-container">
         {LANGUAGES.map((lang) => {
           const isSelected = lang.languageId === selectedLanguageId;
           return (
@@ -116,9 +104,9 @@ export default function DictionaryScreen({
                 // Keep category filter but wipe search query on tab swap
                 setSearchQuery("");
               }}
-              className={`flex-1 py-2 px-3 rounded text-[10px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
+              className={`flex-1 py-2 px-3 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
                 isSelected 
-                  ? "bg-white text-neutral-900 border border-neutral-200 shadow-sm" 
+                  ? "bg-white text-neutral-900 border border-neutral-200" 
                   : "text-neutral-500 hover:text-neutral-900 hover:bg-white border border-transparent"
               }`}
               id={`dict-lang-tab-${lang.languageId}`}
@@ -130,14 +118,6 @@ export default function DictionaryScreen({
         })}
       </div>
 
-      {/* Region info banner */}
-      <div className="bg-blue-50 border border-blue-100 rounded p-3 flex items-start gap-3 text-xs text-blue-700" id="region-info-banner">
-        <Info className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-        <div>
-          <span className="font-bold text-blue-800 uppercase tracking-wider text-[10px]">Research Area:</span> Speech & structures of <strong className="text-blue-900 font-bold">{activeLanguage.name}</strong> primarily localized in <span className="italic">{activeLanguage.region}</span>. Phonetic spelling mapped accurately.
-        </div>
-      </div>
-
       {/* Search Filter Inputs */}
       <div className="space-y-4" id="filter-controls-box">
         {/* Realtime filter input field */}
@@ -147,8 +127,8 @@ export default function DictionaryScreen({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search records, english translations, or phonetics..."
-            className="w-full pl-10 pr-4 py-3 bg-white border border-neutral-200 rounded text-sm placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:border-neutral-400 transition-all font-sans text-neutral-900 shadow-sm"
+            placeholder="Search words or meanings"
+            className="w-full pl-10 pr-4 py-3 bg-white border border-neutral-200 rounded-xl text-sm placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:border-neutral-400 transition-all font-sans text-neutral-900"
             id="dict-search-input"
           />
         </div>
@@ -161,7 +141,7 @@ export default function DictionaryScreen({
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`py-1.5 px-4 rounded text-[10px] uppercase tracking-widest font-bold whitespace-nowrap transition-all border ${
+                className={`py-1.5 px-4 rounded-xl text-[10px] uppercase tracking-widest font-bold whitespace-nowrap transition-all border ${
                   isSelected 
                     ? "bg-neutral-900 text-white border-neutral-900" 
                     : "bg-white text-neutral-500 border-neutral-200 hover:border-neutral-300"
@@ -178,7 +158,7 @@ export default function DictionaryScreen({
       {/* Word results list layout */}
       <div className="space-y-4" id="vocab-results-layout">
         <div className="text-[10px] uppercase tracking-widest text-neutral-500 font-mono flex items-center justify-between px-1">
-          <span>Query returned {filteredWords.length} terms ({activeLanguage.name})</span>
+          <span>{filteredWords.length} words</span>
           {searchQuery && <span>Filter: "{searchQuery}"</span>}
         </div>
 
@@ -196,16 +176,15 @@ export default function DictionaryScreen({
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     whileHover={{ y: -1 }}
-                    className="p-5 bg-white rounded border border-neutral-200 shadow-sm hover:border-neutral-300 hover:shadow transition-all flex justify-between items-start gap-4 relative overflow-hidden"
+                    className="p-5 bg-white rounded-xl border border-neutral-200 hover:border-neutral-300 hover:shadow transition-all flex justify-between items-start gap-4 relative overflow-hidden"
                     id={`dict-word-card-${word.wordId}`}
                   >
                     <div className="space-y-2 min-w-0 flex-1">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-[9px] uppercase font-mono font-bold px-1.5 py-0.5 rounded bg-neutral-50 text-neutral-500 border border-neutral-200 flex items-center gap-1">
+                        <span className="text-[9px] uppercase font-mono font-bold px-1.5 py-0.5 rounded-xl bg-neutral-50 text-neutral-500 border border-neutral-200 flex items-center gap-1">
                           <Tag className="w-2.5 h-2.5 text-neutral-400" />
                           {word.category}
                         </span>
-                        <span className="text-[9px] text-neutral-400 font-mono tracking-widest">UID: {word.wordId}</span>
                       </div>
                       
                       <h3 className="text-xl font-bold text-neutral-900 font-display tracking-tight leading-none mt-1">
@@ -217,18 +196,30 @@ export default function DictionaryScreen({
                         <span className="text-neutral-700">{word.meaning}</span>
                       </p>
 
-                      <p className="text-[10px] font-mono font-medium text-neutral-500 bg-neutral-50 px-2 py-1 rounded inline-block mt-2 border border-neutral-200">
+                      <p className="text-[10px] font-mono font-medium text-neutral-500 bg-neutral-50 px-2 py-1 rounded-xl inline-block mt-2 border border-neutral-200">
                         Phonetic: /{word.pronunciation}/
                       </p>
+
+                      {word.variant && (
+                        <p className="text-[11px] text-neutral-600 mt-2">
+                          <span className="font-bold">Also written:</span> {word.variant}
+                        </p>
+                      )}
+                      {word.note && (
+                        <p className="text-[11px] leading-relaxed text-neutral-500 mt-1">{word.note}</p>
+                      )}
+                      {word.source && (
+                        <p className="text-[9px] uppercase tracking-widest font-mono text-amber-700 mt-1">Source: {word.source}</p>
+                      )}
                     </div>
 
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handlePlayWord(word)}
-                      className={`p-2.5 rounded border transition-all mt-6 ${
+                      className={`p-2.5 rounded-xl border transition-all mt-6 ${
                         isPlaying 
-                          ? "bg-neutral-900 text-white border-neutral-900 shadow-sm animate-pulse" 
+                          ? "bg-neutral-900 text-white border-neutral-900 animate-pulse" 
                           : "bg-neutral-50 text-neutral-500 hover:text-neutral-900 border-neutral-200 hover:border-neutral-300"
                       }`}
                       id={`play-tts-dict-${word.wordId}`}
@@ -243,7 +234,7 @@ export default function DictionaryScreen({
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="py-12 text-center bg-neutral-50 border border-dashed border-neutral-200 rounded space-y-3"
+              className="py-12 text-center bg-neutral-50 border border-dashed border-neutral-200 rounded-xl space-y-3"
               id="no-results-panel"
             >
               <Compass className="w-8 h-8 text-neutral-400 mx-auto" />
@@ -257,7 +248,7 @@ export default function DictionaryScreen({
                   setSearchQuery("");
                   setSelectedCategory("All");
                 }}
-                className="inline-flex mt-4 bg-white border border-neutral-200 hover:border-neutral-300 text-neutral-600 hover:text-neutral-900 text-[10px] uppercase tracking-widest font-bold px-4 py-2 rounded transition-colors"
+                className="inline-flex mt-4 bg-white border border-neutral-200 hover:border-neutral-300 text-neutral-600 hover:text-neutral-900 text-[10px] uppercase tracking-widest font-bold px-4 py-2 rounded-xl transition-colors"
                 id="reset-filter-btn"
               >
                 Clear Filters

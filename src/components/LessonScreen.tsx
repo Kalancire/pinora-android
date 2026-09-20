@@ -17,6 +17,8 @@ import {
 import { Lesson, Word, UserProgress } from "../types";
 import { WORDS } from "../data";
 import { TtsManager } from "../utils/tts";
+import { playSfx } from "../utils/sfx";
+import { Check as CheckIcon, X as XIcon } from "lucide-react";
 
 interface LessonScreenProps {
   key?: string;
@@ -135,25 +137,23 @@ export default function LessonScreen({
     }
   };
 
-  // Generate false options for matching quiz
-  const generateQuizOptions = (correctMeaning: string) => {
-    // Collect alternative meanings from same or other languages
-    const alternatives = WORDS
-      .filter(w => w.meaning !== correctMeaning)
-      .map(w => w.meaning);
-    
-    // Sift unique alternatives and shuffle
-    const uniqueAlts = Array.from(new Set(alternatives)).filter(m => m !== correctMeaning);
-    const shuffledAlts = uniqueAlts.sort(() => 0.5 - Math.random()).slice(0, 2);
-    
-    const originalOptions = [correctMeaning, ...shuffledAlts];
-    return originalOptions.sort(() => 0.5 - Math.random());
+  // Generate false options for the matching quiz: same language, same category first,
+  // short plain meanings preferred, so wrong answers look realistic but are clearly wrong.
+  const generateQuizOptions = (word: { meaning: string; languageId: number; category: string }) => {
+    const correctMeaning = word.meaning;
+    const pool = WORDS.filter((w) => w.languageId === word.languageId && w.meaning !== correctMeaning && w.meaning.length <= 28 && !w.meaning.includes("("));
+    const unique = (arr: typeof pool) => Array.from(new Set(arr.map((w) => w.meaning)));
+    const shuffle = <T,>(a: T[]) => [...a].sort(() => 0.5 - Math.random());
+    const sameCat = shuffle(unique(pool.filter((w) => w.category === word.category)));
+    const rest = shuffle(unique(pool.filter((w) => w.category !== word.category)));
+    const distractors = [...sameCat, ...rest].slice(0, 2);
+    return shuffle([correctMeaning, ...distractors]);
   };
 
   // Prime subsequent question for quiz index
   useEffect(() => {
     if (mode === "quiz" && currentQuizWord) {
-      setQuizAnswers(generateQuizOptions(currentQuizWord.meaning));
+      setQuizAnswers(generateQuizOptions(currentQuizWord));
       setSelectedQuizAnswer(null);
       setIsQuizCorrect(null);
     }
@@ -166,6 +166,7 @@ export default function LessonScreen({
     setSelectedQuizAnswer(option);
     const correct = option === currentQuizWord.meaning;
     setIsQuizCorrect(correct);
+    playSfx(correct ? "correct" : "wrong");
 
     if (correct) {
       setPointsAccumulated(p => p + 15); // Bonus 15 XP for correct quiz answer
@@ -219,25 +220,18 @@ export default function LessonScreen({
 
   return (
     <div className="space-y-8" id="lesson-screen-container">
-      {/* Upper Navigation Indicator */}
-      <div className="flex items-center justify-between border-b border-neutral-200 pb-4" id="lesson-header-bar">
+      {/* Slim lesson header */}
+      <div className="flex items-center justify-between" id="lesson-header-bar">
         <button
           onClick={onBackToHome}
-          className="flex items-center gap-1.5 text-neutral-500 hover:text-neutral-900 transition-colors text-xs font-bold uppercase tracking-widest"
+          className="w-10 h-10 rounded-full bg-white border border-neutral-200/80 flex items-center justify-center text-neutral-600 active:scale-95 transition-transform"
           id="back-to-home-btn"
+          aria-label="Close lesson"
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          Exit
+          <XIcon className="w-4 h-4" />
         </button>
-
-        <div className="text-right">
-          <span className="text-[9px] uppercase font-bold tracking-widest text-neutral-400 block font-mono">
-            Active Session
-          </span>
-          <span className="text-sm font-semibold text-neutral-900 font-display tracking-tight">
-            {lesson.title}
-          </span>
-        </div>
+        <span className="text-sm font-semibold text-neutral-900 tracking-tight truncate max-w-[60%]">{lesson.title}</span>
+        <span className="w-10" />
       </div>
 
       <AnimatePresence mode="wait">
@@ -253,7 +247,7 @@ export default function LessonScreen({
             {/* Progression progress bar */}
             <div className="space-y-2">
               <div className="flex justify-between items-center text-[10px] uppercase font-bold text-neutral-500 tracking-widest font-mono">
-                <span>Phase I: Recognition</span>
+                <span>Learn</span>
                 <span>
                   {currentWordIdx + 1} / {lessonWords.length}
                 </span>
@@ -274,7 +268,7 @@ export default function LessonScreen({
                 style={{ perspective: "1000px" }}
               >
                 <motion.div
-                  className={`w-full h-full rounded-lg p-8 flex flex-col justify-between shadow-sm border transition-all duration-500 absolute backface-hidden select-none ${
+                  className={`w-full h-full rounded-2xl p-8 flex flex-col justify-between border transition-all duration-500 absolute backface-hidden select-none ${
                     isFlipped 
                       ? "bg-neutral-50 border-neutral-200" 
                       : "bg-white border-neutral-200 hover:border-neutral-300 hover:shadow-md"
@@ -311,7 +305,7 @@ export default function LessonScreen({
                             e.stopPropagation();
                             handleTts(currentWord.word);
                           }}
-                          className={`p-2.5 rounded transition-colors flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest ${
+                          className={`p-2.5 rounded-xl transition-colors flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest ${
                             isSpeaking 
                               ? "bg-neutral-100 text-neutral-900 animate-pulse" 
                               : "text-neutral-500 hover:text-neutral-900 hover:bg-neutral-50 border border-transparent hover:border-neutral-200"
@@ -346,7 +340,7 @@ export default function LessonScreen({
                             e.stopPropagation();
                             handleTts(currentWord.meaning);
                           }}
-                          className="bg-neutral-100 border border-neutral-200 text-neutral-900 px-3 py-2 rounded hover:bg-neutral-200 transition-colors flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest"
+                          className="bg-neutral-100 border border-neutral-200 text-neutral-900 px-3 py-2 rounded-xl hover:bg-neutral-200 transition-colors flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest"
                           id={`tts-translation-${currentWord.wordId}`}
                         >
                           <Volume2 className="w-4 h-4" />
@@ -374,10 +368,10 @@ export default function LessonScreen({
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={handleNextStudy}
-                className="bg-neutral-900 text-white font-bold text-[10px] uppercase tracking-widest px-6 py-3 rounded-md shadow-sm hover:bg-neutral-800 transition-colors flex items-center gap-2"
+                className="bg-neutral-900 text-white font-bold text-[10px] uppercase tracking-widest px-6 py-3 rounded-xl hover:bg-neutral-800 transition-colors flex items-center gap-2"
                 id="next-study-card-btn"
               >
-                {currentWordIdx === lessonWords.length - 1 ? "Next Phase" : "Next Term"}
+                {currentWordIdx === lessonWords.length - 1 ? "Next Phase" : "Next word"}
                 <ChevronRight className="w-4 h-4" />
               </motion.button>
             </div>
@@ -412,7 +406,7 @@ export default function LessonScreen({
             </div>
 
             {/* Speech Challenge Box */}
-            <div className="bg-white border border-neutral-200 rounded-md p-8 text-center shadow-sm" id="speech-challenge">
+            <div className="bg-white border border-neutral-200 rounded-xl p-8 text-center" id="speech-challenge">
               <span className="text-[9px] uppercase font-mono font-bold tracking-widest text-neutral-400 block mb-3">
                 Dictation Target
               </span>
@@ -428,7 +422,7 @@ export default function LessonScreen({
                   whileTap={{ scale: 0.95 }}
                   onClick={handleStartListening}
                   disabled={isListening}
-                  className={`w-16 h-16 rounded border flex items-center justify-center transition-colors ${
+                  className={`w-16 h-16 rounded-xl border flex items-center justify-center transition-colors ${
                     isListening 
                       ? "bg-neutral-50 border-neutral-200 text-neutral-900 shadow-[0_0_15px_rgba(0,0,0,0.05)]" 
                       : "bg-neutral-900 border-neutral-900 hover:bg-neutral-800 text-white"
@@ -447,9 +441,9 @@ export default function LessonScreen({
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`p-4 rounded-md border text-left ${
+                    className={`p-4 rounded-xl border text-left ${
                       (speechConfidence || 0) > 0.6 
-                        ? "bg-emerald-50 border-emerald-200 text-emerald-800" 
+                        ? "bg-neutral-100 border-transparent text-emerald-800" 
                         : "bg-neutral-50 border-neutral-200 text-neutral-600"
                     }`}
                   >
@@ -483,10 +477,10 @@ export default function LessonScreen({
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={handleNextSpeech}
-                className="bg-neutral-200 text-neutral-900 font-bold text-[10px] uppercase tracking-widest px-6 py-3 rounded-md shadow-sm hover:bg-white transition-colors flex items-center gap-2"
+                className="bg-neutral-200 text-neutral-900 font-bold text-[10px] uppercase tracking-widest px-6 py-3 rounded-xl hover:bg-white transition-colors flex items-center gap-2"
                 id="next-speech-card-btn"
               >
-                {speechWordIdx === lessonWords.length - 1 ? "Next Phase" : "Next Term"}
+                {speechWordIdx === lessonWords.length - 1 ? "Next Phase" : "Next word"}
                 <ChevronRight className="w-4 h-4" />
               </motion.button>
             </div>
@@ -521,7 +515,7 @@ export default function LessonScreen({
             </div>
 
             {/* Quiz Question Box */}
-            <div className="bg-white border border-neutral-200 rounded-md p-8 text-center shadow-sm" id="quiz-question">
+            <div className="bg-white border border-neutral-200 rounded-xl p-8 text-center" id="quiz-question">
               <span className="text-[9px] uppercase font-mono font-bold tracking-widest text-neutral-400 block mb-3">
                 Identify Translation
               </span>
@@ -535,7 +529,7 @@ export default function LessonScreen({
               <div className="mt-6 flex justify-center">
                 <button
                   onClick={() => handleTts(currentQuizWord.word)}
-                  className="bg-neutral-50 text-neutral-600 px-4 py-2 rounded shadow-sm hover:bg-neutral-100 hover:text-neutral-900 transition-all flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest border border-neutral-200"
+                  className="bg-neutral-50 text-neutral-600 px-4 py-2 rounded-xl hover:bg-neutral-100 hover:text-neutral-900 transition-all flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest border border-neutral-200"
                   id={`quiz-tts-${currentQuizWord.wordId}`}
                 >
                   <Volume2 className="w-4 h-4" /> Reference Audio
@@ -554,10 +548,10 @@ export default function LessonScreen({
                 if (selectedQuizAnswer !== null) {
                   if (isSelected) {
                     optionStyle = isCorrectOption 
-                      ? "bg-emerald-50 border-emerald-300 text-emerald-700 ring-1 ring-emerald-300"
+                      ? "bg-neutral-100 border-emerald-300 text-neutral-600 ring-1 ring-emerald-300"
                       : "bg-red-50 border-red-300 text-red-700";
                   } else if (isCorrectOption) {
-                    optionStyle = "bg-neutral-50 border-emerald-200 text-emerald-600 opacity-70";
+                    optionStyle = "bg-neutral-50 border-transparent text-emerald-600 opacity-70";
                   } else {
                     optionStyle = "bg-neutral-50 border-neutral-200 text-neutral-400 opacity-50 grayscale";
                   }
@@ -569,15 +563,15 @@ export default function LessonScreen({
                     whileTap={selectedQuizAnswer === null ? { scale: 0.98 } : {}}
                     onClick={() => handleSelectOption(option)}
                     disabled={selectedQuizAnswer !== null}
-                    className={`w-full p-5 rounded-md border text-left font-semibold text-sm transition-all flex items-center justify-between ${optionStyle}`}
+                    className={`w-full p-5 rounded-xl border text-left font-semibold text-sm transition-all flex items-center justify-between ${optionStyle}`}
                     id={`quiz-option-${i}`}
                   >
                     <span>{option}</span>
                     {selectedQuizAnswer !== null && isCorrectOption && (
-                      <span className="text-emerald-600 font-bold text-[10px] tracking-widest uppercase flex items-center gap-1">✓ Correct</span>
+                      <span className="text-emerald-600 font-bold text-[10px] tracking-widest uppercase flex items-center gap-1"><CheckIcon className="w-3.5 h-3.5" /> Correct</span>
                     )}
                     {selectedQuizAnswer !== null && isSelected && !isCorrectOption && (
-                      <span className="text-red-600 font-bold text-[10px] tracking-widest uppercase flex items-center gap-1">✗ Incorrect</span>
+                      <span className="text-red-600 font-bold text-[10px] tracking-widest uppercase flex items-center gap-1"><XIcon className="w-3.5 h-3.5" /> Incorrect</span>
                     )}
                   </motion.button>
                 );
@@ -589,9 +583,9 @@ export default function LessonScreen({
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`p-5 rounded-md border flex items-start gap-3 shadow-sm ${
+                className={`p-5 rounded-xl border flex items-start gap-3 ${
                   isQuizCorrect 
-                    ? "bg-emerald-50 border-emerald-200 text-emerald-800" 
+                    ? "bg-neutral-100 border-transparent text-emerald-800" 
                     : "bg-white border-neutral-200 text-neutral-600"
                 }`}
                 id="quiz-feedback-box"
@@ -601,7 +595,7 @@ export default function LessonScreen({
                     <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
                     <div>
                       <h4 className="font-bold text-sm text-emerald-900">Target Accurately Matched (+15 XP)</h4>
-                      <p className="text-xs text-emerald-700 mt-1 leading-relaxed">
+                      <p className="text-xs text-neutral-600 mt-1 leading-relaxed">
                         Retention verified. Proceed to the next module.
                       </p>
                     </div>
@@ -630,14 +624,14 @@ export default function LessonScreen({
                 whileTap={{ scale: 0.95 }}
                 onClick={handleNextQuiz}
                 disabled={selectedQuizAnswer === null}
-                className={`font-bold text-[10px] uppercase tracking-widest px-6 py-3 rounded-md shadow-sm transition-colors flex items-center gap-2 ${
+                className={`font-bold text-[10px] uppercase tracking-widest px-6 py-3 rounded-xl transition-colors flex items-center gap-2 ${
                   selectedQuizAnswer !== null 
                     ? "bg-neutral-900 text-white hover:bg-neutral-800" 
                     : "bg-neutral-50 border border-neutral-200 text-neutral-400 cursor-not-allowed"
                 }`}
                 id="quiz-next-question-btn"
               >
-                {quizWordIdx === lessonWords.length - 1 ? "Generate Report" : "Next Term"}
+                {quizWordIdx === lessonWords.length - 1 ? "Finish" : "Next word"}
                 <ChevronRight className="w-4 h-4" />
               </motion.button>
             </div>
@@ -650,46 +644,46 @@ export default function LessonScreen({
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="bg-white rounded-lg border border-neutral-200 p-8 md:p-10 shadow-sm text-center space-y-8"
+            className="bg-white rounded-2xl border border-neutral-200 p-8 md:p-10 text-center space-y-8"
             id="summary-panel"
           >
             {/* Large flame reward center */}
             <div className="flex flex-col items-center justify-center space-y-3">
-              <div className="w-20 h-20 bg-neutral-900 rounded-md flex items-center justify-center relative shadow-sm">
+              <div className="w-20 h-20 bg-neutral-900 rounded-xl flex items-center justify-center relative">
                 <CheckCircle className="w-10 h-10 text-white" />
-                <Award className="w-6 h-6 text-neutral-900 absolute -right-2 -bottom-2 bg-white rounded-md p-0.5 border border-neutral-200" />
+                <Award className="w-6 h-6 text-neutral-900 absolute -right-2 -bottom-2 bg-white rounded-xl p-0.5 border border-neutral-200" />
               </div>
               <h2 className="text-3xl font-extrabold text-neutral-900 font-display tracking-tight">
-                Module Complete
+                Lesson complete
               </h2>
               <p className="text-sm text-neutral-500 max-w-sm">
-                Curriculum syllabus <strong className="text-neutral-900">{lesson.title}</strong> processed successfully. Your metrics have been securely stored.
+                You finished <strong className="text-neutral-900">{lesson.title}</strong>. Save it to keep your XP.
               </p>
             </div>
 
             {/* Breakdown statistics list */}
-            <div className="bg-neutral-50 rounded-md p-6 max-w-sm mx-auto space-y-4 text-left border border-neutral-200" id="summary-table">
+            <div className="bg-neutral-50 rounded-xl p-6 max-w-sm mx-auto space-y-4 text-left border border-neutral-200" id="summary-table">
               <h4 className="text-[10px] uppercase font-mono text-neutral-400 font-bold tracking-widest border-b border-neutral-200 pb-2">
-                Performance Audit
+                Your results
               </h4>
 
               <div className="flex justify-between text-sm py-1">
-                <span className="text-neutral-500 text-xs">Module Base Index</span>
+                <span className="text-neutral-500 text-xs">Lesson reward</span>
                 <span className="font-bold text-neutral-900 text-xs">+{lesson.xpReward} XP</span>
               </div>
 
               <div className="flex justify-between text-sm py-1">
-                <span className="text-neutral-500 text-xs">Phonetic Discovery</span>
+                <span className="text-neutral-500 text-xs">Cards revealed</span>
                 <span className="font-bold text-neutral-900 text-xs">+{Object.keys(revealedStates).length * 10} XP</span>
               </div>
 
               <div className="flex justify-between text-sm py-1">
-                <span className="text-neutral-500 text-xs">Assessment Yield</span>
+                <span className="text-neutral-500 text-xs">Quiz bonus</span>
                 <span className="font-bold text-neutral-900 text-xs">+{Math.max(0, pointsAccumulated - (Object.keys(revealedStates).length * 10))} XP</span>
               </div>
 
               <div className="flex justify-between text-sm pt-4 border-t border-neutral-200 mt-2">
-                <span className="font-bold text-[10px] uppercase tracking-widest text-neutral-400">Total Yield</span>
+                <span className="font-bold text-[10px] uppercase tracking-widest text-neutral-400">Total</span>
                 <span className="font-mono font-extrabold text-neutral-900 text-base">+{lesson.xpReward + pointsAccumulated} XP</span>
               </div>
             </div>
@@ -697,11 +691,11 @@ export default function LessonScreen({
             {/* Completion items list */}
             <div className="space-y-3 max-w-sm mx-auto">
               <h4 className="text-[10px] uppercase font-mono text-neutral-500 font-bold text-left tracking-widest">
-                Retained Vocabulary Lexicon
+                Words you practiced
               </h4>
               <div className="grid grid-cols-2 gap-3" id="summary_word_chips">
                 {lessonWords.map(w => (
-                  <div key={w.wordId} className="flex items-center gap-2 p-3 bg-neutral-50 rounded text-[11px] font-bold uppercase tracking-wide text-neutral-600 border border-neutral-200">
+                  <div key={w.wordId} className="flex items-center gap-2 p-3 bg-neutral-50 rounded-xl text-[11px] font-bold uppercase tracking-wide text-neutral-600 border border-neutral-200">
                     <span className="truncate">{w.word}</span>
                   </div>
                 ))}
@@ -714,11 +708,11 @@ export default function LessonScreen({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleFinishClaim}
-                className="w-full bg-neutral-900 text-white hover:bg-neutral-800 font-bold py-4 px-6 rounded-md shadow-sm transition-all flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest"
+                className="w-full bg-neutral-900 text-white hover:bg-neutral-800 font-bold py-4 px-6 rounded-xl transition-all flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest"
                 id="claim-xp-return-btn"
               >
                 <Award className="w-4 h-4 shrink-0" />
-                Commit Records
+                Save progress
               </motion.button>
             </div>
           </motion.div>

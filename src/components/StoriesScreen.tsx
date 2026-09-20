@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { AW_ISTORYA, Story } from "../data/sambalGuideData";
 import { TtsManager } from "../utils/tts";
+import PageHeader from "./ui/PageHeader";
 
 interface StoriesScreenProps {
   key?: string;
@@ -48,28 +49,7 @@ export default function StoriesScreen({
       className="space-y-6"
       id="stories-container"
     >
-      {/* Header bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutral-200 pb-4 gap-3">
-        <button
-          onClick={onBackToHome}
-          className="flex items-center gap-1.5 text-neutral-500 hover:text-neutral-900 transition-colors text-[10px] uppercase font-bold tracking-widest self-start"
-          id="stories-back-btn"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Dashboard
-        </button>
-
-        <div className="text-right">
-          <div className="flex items-center justify-end gap-2">
-            <span className="text-[9px] uppercase font-mono tracking-widest text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded font-bold">
-              Aw-Istorya nin Sambal
-            </span>
-          </div>
-          <span className="text-sm font-bold text-neutral-900 font-display block mt-1">
-            Zambales Indigenous Literature & Readers
-          </span>
-        </div>
-      </div>
+      <PageHeader title="Stories" subtitle="Zambales readers with audio." />
 
       {/* Stories Carousel / Selector Grid */}
       <div className="space-y-2">
@@ -88,9 +68,9 @@ export default function StoriesScreen({
                   setSelectedStoryId(story.id);
                   setPlayingParagraphIdx(null);
                 }}
-                className={`p-3 rounded border text-left transition-all relative flex flex-col justify-between ${
+                className={`p-3 rounded-xl border text-left transition-all relative flex flex-col justify-between ${
                   isSelected
-                    ? "bg-neutral-900 text-white border-neutral-900 shadow-sm"
+                    ? "bg-neutral-900 text-white border-neutral-900"
                     : "bg-white text-neutral-800 border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50"
                 }`}
                 id={`story-tab-${story.id}`}
@@ -113,12 +93,12 @@ export default function StoriesScreen({
       </div>
 
       {/* Story Reader Card */}
-      <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow-sm space-y-6" id="story-reader-view">
+      <div className="bg-white border border-neutral-200 rounded-2xl p-6 space-y-6" id="story-reader-view">
         {/* Story Metadata */}
         <div className="border-b border-neutral-100 pb-4 space-y-2">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">
+              <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-amber-700 bg-neutral-100 border border-transparent px-2 py-0.5 rounded-xl">
                 Sambal Botolan Reader
               </span>
               <h2 className="text-2xl font-bold font-display text-neutral-900 mt-1">
@@ -127,10 +107,10 @@ export default function StoriesScreen({
             </div>
 
             {/* Translation Toggles */}
-            <div className="flex items-center gap-2 self-start sm:self-auto bg-neutral-100 p-1 rounded border border-neutral-200 text-xs">
+            <div className="flex items-center gap-2 self-start sm:self-auto bg-neutral-100 p-1 rounded-xl border border-neutral-200 text-xs">
               <button
                 onClick={() => setShowFilipino(!showFilipino)}
-                className={`px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider transition-all ${
+                className={`px-2.5 py-1 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all ${
                   showFilipino
                     ? "bg-white text-neutral-900 shadow-2xs font-bold"
                     : "text-neutral-500 hover:text-neutral-900"
@@ -140,7 +120,7 @@ export default function StoriesScreen({
               </button>
               <button
                 onClick={() => setShowEnglish(!showEnglish)}
-                className={`px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider transition-all ${
+                className={`px-2.5 py-1 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all ${
                   showEnglish
                     ? "bg-white text-neutral-900 shadow-2xs font-bold"
                     : "text-neutral-500 hover:text-neutral-900"
@@ -163,10 +143,10 @@ export default function StoriesScreen({
           </div>
 
           {/* Cultural Context */}
-          <div className="bg-amber-50/70 border border-amber-200/80 rounded p-3 text-xs text-amber-900 flex items-start gap-2.5">
+          <div className="bg-neutral-100/70 border border-transparent/80 rounded-xl p-3 text-xs text-neutral-800 flex items-start gap-2.5">
             <Sparkles className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
             <div>
-              <strong className="uppercase font-mono text-[10px] text-amber-800 tracking-wider">Cultural Background:</strong>{" "}
+              <strong className="uppercase font-mono text-[10px] text-neutral-700 tracking-wider">Cultural Background:</strong>{" "}
               {activeStory.culturalNote}
             </div>
           </div>
@@ -179,7 +159,7 @@ export default function StoriesScreen({
             return (
               <div
                 key={idx}
-                className="bg-neutral-50/70 border border-neutral-200 rounded-lg p-5 space-y-3 relative hover:border-neutral-300 transition-colors"
+                className="bg-neutral-50/70 border border-neutral-200 rounded-2xl p-5 space-y-3 relative hover:border-neutral-300 transition-colors"
                 id={`story-para-${idx}`}
               >
                 <div className="flex items-start justify-between gap-4">
@@ -190,7 +170,7 @@ export default function StoriesScreen({
 
                   <button
                     onClick={() => handlePlayParagraph(para.sambal, idx)}
-                    className={`p-2 rounded border transition-all shrink-0 mt-1 ${
+                    className={`p-2 rounded-xl border transition-all shrink-0 mt-1 ${
                       isPlaying
                         ? "bg-neutral-900 text-white border-neutral-900 animate-pulse"
                         : "bg-white text-neutral-500 hover:text-neutral-900 border-neutral-200 hover:border-neutral-300 shadow-2xs"
@@ -226,7 +206,7 @@ export default function StoriesScreen({
         </div>
 
         {/* Key Vocabulary in the Story */}
-        <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4 space-y-3">
+        <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-4 space-y-3">
           <div className="text-[10px] uppercase font-mono font-bold tracking-widest text-neutral-500 flex items-center gap-1.5">
             <Bookmark className="w-3.5 h-3.5 text-amber-500" />
             Key Vocabulary in this Narrative:
@@ -236,7 +216,7 @@ export default function StoriesScreen({
             {activeStory.vocabulary.map((vocab, vIdx) => (
               <div
                 key={vIdx}
-                className="bg-white border border-neutral-200 rounded p-2.5 text-xs space-y-1 shadow-2xs"
+                className="bg-white border border-neutral-200 rounded-xl p-2.5 text-xs space-y-1 shadow-2xs"
               >
                 <div className="font-bold text-neutral-900 font-display flex items-center justify-between">
                   <span>{vocab.word}</span>
@@ -267,12 +247,12 @@ export default function StoriesScreen({
               className="text-xs font-bold text-neutral-600 hover:text-neutral-900 flex items-center gap-1.5"
             >
               <BookOpen className="w-4 h-4 text-neutral-400" />
-              <span>Review DepEd Spelling Rules for this vocabulary</span>
+              <span>Review the spelling rules for this vocabulary</span>
             </button>
           )}
 
           <div className="text-[10px] font-mono text-neutral-400">
-            Source: Manulat Tamoy Na (2017) DepEd Zambales IPED
+            Source: Manulat Tamoy Na (2017)
           </div>
         </div>
       </div>

@@ -66,11 +66,8 @@ export const GUIDE_METADATA = {
   subtitle: "Panlekan Panulat nin Sambal Botolan (A Guide in Writing Sambal Botolan Language)",
   englishTitle: "Botolan Sambal Spelling Guide & Grammar Introduction",
   edition: "First Edition, 2017",
-  publisher: "Department of Education – Region III & SIL Philippines",
-  location: "Schools Division of Zambales, Iba, Zambales",
-  regionalFocalPerson: "Arnold C. Montemayor, M.Ed. (Regional IPED Focal Person)",
-  clmdChief: "Elizabeth M. Perfecto, Ed.D. (CLMD Chief)",
-  director: "Malcolm S. Garma, CESO V (Director, DepEd Region-III)",
+  publisher: "SIL Philippines",
+  location: "Zambales",
   linguists: "Roger Stone, M.A. (SIL Philippines Linguist), Chitse Magaspag, M.A., Levi Cirilo Cruz, M.A., Mansueto Casquite, M.A., Marciana E. Ramos",
   acknowledgement: `Hikayi ya aw-ayta ni Botolan ay leseb ya nakem nin ampasalamat boy ampamalay ha tawtawo’y nag-in katambay ha pamu-o boy pami-aep nin katandaan ni kawkatutubo tungkol ha Katutubong Katandaan boy Kultura. Koy Apo Namalyari, ya namalsa nin kaganawan boy taw tawo ha babon lota. Ha grupo nin SIL, ha tiknikal ya pagsuporta ha pangalalay boy pangwa nin dawdatus, panambay ha pamiki-ilgo, pamikilamo boy panggawa nin disisyon no pangno ihulat ya haw halita tamo. Malake ya salamat po!!!`
 };

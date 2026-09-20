@@ -14,6 +14,9 @@ export interface Word {
   meaning: string;
   pronunciation: string;
   category: string;
+  variant?: string; // alternate spelling (e.g. Module 5 / Antworth 1979 spelling)
+  note?: string; // accuracy / usage note
+  source?: string; // where the entry is attested
 }
 
 export interface Lesson {
@@ -36,4 +39,7 @@ export interface UserProgress {
   achievements?: string[]; // Array of awarded badge IDs or names
   dailyXpGoal?: number; // Target XP per day
   mistakes?: number[]; // Array of wordIds the user got wrong
+  soundOn?: boolean; // sound effects enabled
+  activeLanguageId?: number; // last selected language
+  updatedAt?: number; // last save timestamp (used to pick the newest copy)
 }

@@ -24,6 +24,7 @@ import {
   AlphabetEntry
 } from "../data/sambalGuideData";
 import { TtsManager } from "../utils/tts";
+import PageHeader from "./ui/PageHeader";
 
 interface SpellingGuideScreenProps {
   key?: string;
@@ -76,31 +77,10 @@ export default function SpellingGuideScreen({
       className="space-y-6"
       id="spelling-guide-container"
     >
-      {/* Header bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutral-200 pb-4 gap-3">
-        <button
-          onClick={onBackToHome}
-          className="flex items-center gap-1.5 text-neutral-500 hover:text-neutral-900 transition-colors text-[10px] uppercase font-bold tracking-widest self-start"
-          id="guide-back-btn"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Dashboard
-        </button>
-
-        <div className="text-right">
-          <div className="flex items-center justify-end gap-2">
-            <span className="text-[9px] uppercase font-mono tracking-widest text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-bold">
-              DepEd Region III & SIL 2017
-            </span>
-          </div>
-          <span className="text-sm font-bold text-neutral-900 font-display block mt-1">
-            Manulat Tamoy Na (Panlekan Panulat)
-          </span>
-        </div>
-      </div>
+      <PageHeader title="Spelling guide" subtitle="Manulat Tamoy Na, the 2017 Botolan Sambal orthography." />
 
       {/* Guide Banner */}
-      <div className="bg-neutral-900 text-white rounded-lg p-6 relative overflow-hidden shadow-sm" id="guide-hero-banner">
+      <div className="bg-neutral-900 text-white rounded-2xl p-6 relative overflow-hidden" id="guide-hero-banner">
         <div className="relative z-10 max-w-2xl space-y-2">
           <div className="inline-flex items-center gap-2 text-xs font-mono text-neutral-300 uppercase tracking-widest">
             <BookOpen className="w-3.5 h-3.5 text-amber-400" />
@@ -110,13 +90,13 @@ export default function SpellingGuideScreen({
             {GUIDE_METADATA.title}: {GUIDE_METADATA.subtitle}
           </h2>
           <p className="text-xs text-neutral-300 leading-relaxed font-sans">
-            Official educational reference developed by the Department of Education Division of Zambales and SIL Philippines for mother tongue-based education in Botolan.
+            A guide to writing Botolan Sambal, produced with SIL Philippines.
           </p>
           {onOpenStories && (
             <div className="pt-2">
               <button
                 onClick={onOpenStories}
-                className="inline-flex items-center gap-2 text-xs font-bold bg-white text-neutral-900 px-4 py-2 rounded hover:bg-neutral-100 transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 text-xs font-bold bg-white text-neutral-900 px-4 py-2 rounded-xl hover:bg-neutral-100 transition-colors"
               >
                 <span>Read Zambales Cultural Stories (Aw-Istorya)</span>
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -127,12 +107,12 @@ export default function SpellingGuideScreen({
       </div>
 
       {/* Tab Navigation */}
-      <div className="bg-neutral-100 p-1 rounded flex flex-wrap gap-1 border border-neutral-200" id="guide-tabs">
+      <div className="bg-neutral-100 p-1 rounded-xl flex flex-wrap gap-1 border border-neutral-200" id="guide-tabs">
         <button
           onClick={() => setActiveTab("rules")}
-          className={`flex-1 min-w-[120px] py-2 px-3 rounded text-[11px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
+          className={`flex-1 min-w-[120px] py-2 px-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
             activeTab === "rules"
-              ? "bg-white text-neutral-900 border border-neutral-200 shadow-sm"
+              ? "bg-white text-neutral-900 border border-neutral-200"
               : "text-neutral-500 hover:text-neutral-900 hover:bg-white/60"
           }`}
           id="tab-btn-rules"
@@ -142,9 +122,9 @@ export default function SpellingGuideScreen({
         </button>
         <button
           onClick={() => setActiveTab("grammar")}
-          className={`flex-1 min-w-[120px] py-2 px-3 rounded text-[11px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
+          className={`flex-1 min-w-[120px] py-2 px-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
             activeTab === "grammar"
-              ? "bg-white text-neutral-900 border border-neutral-200 shadow-sm"
+              ? "bg-white text-neutral-900 border border-neutral-200"
               : "text-neutral-500 hover:text-neutral-900 hover:bg-white/60"
           }`}
           id="tab-btn-grammar"
@@ -154,9 +134,9 @@ export default function SpellingGuideScreen({
         </button>
         <button
           onClick={() => setActiveTab("alphabet")}
-          className={`flex-1 min-w-[120px] py-2 px-3 rounded text-[11px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
+          className={`flex-1 min-w-[120px] py-2 px-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
             activeTab === "alphabet"
-              ? "bg-white text-neutral-900 border border-neutral-200 shadow-sm"
+              ? "bg-white text-neutral-900 border border-neutral-200"
               : "text-neutral-500 hover:text-neutral-900 hover:bg-white/60"
           }`}
           id="tab-btn-alphabet"
@@ -166,15 +146,15 @@ export default function SpellingGuideScreen({
         </button>
         <button
           onClick={() => setActiveTab("credits")}
-          className={`flex-1 min-w-[120px] py-2 px-3 rounded text-[11px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
+          className={`flex-1 min-w-[120px] py-2 px-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
             activeTab === "credits"
-              ? "bg-white text-neutral-900 border border-neutral-200 shadow-sm"
+              ? "bg-white text-neutral-900 border border-neutral-200"
               : "text-neutral-500 hover:text-neutral-900 hover:bg-white/60"
           }`}
           id="tab-btn-credits"
         >
           <Award className="w-3.5 h-3.5" />
-          DepEd Zambales & Credits
+          Credits
         </button>
       </div>
 
@@ -189,7 +169,7 @@ export default function SpellingGuideScreen({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search spelling rules, glottal stops, examples, or words..."
-              className="w-full pl-10 pr-4 py-3 bg-white border border-neutral-200 rounded text-sm placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:border-neutral-400 font-sans text-neutral-900 shadow-sm"
+              className="w-full pl-10 pr-4 py-3 bg-white border border-neutral-200 rounded-xl text-sm placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:border-neutral-400 font-sans text-neutral-900"
             />
           </div>
 
@@ -198,12 +178,12 @@ export default function SpellingGuideScreen({
             {filteredRules.map((rule) => (
               <div
                 key={rule.id}
-                className="bg-white border border-neutral-200 rounded-lg p-5 shadow-sm space-y-4 transition-all hover:border-neutral-300"
+                className="bg-white border border-neutral-200 rounded-2xl p-5 space-y-4 transition-all hover:border-neutral-300"
                 id={`rule-card-${rule.id}`}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-neutral-100 pb-3">
                   <div>
-                    <span className="text-[10px] font-mono uppercase font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">
+                    <span className="text-[10px] font-mono uppercase font-bold text-amber-700 bg-neutral-100 border border-transparent px-2 py-0.5 rounded-xl">
                       {rule.ruleNumber}
                     </span>
                     <h3 className="text-lg font-bold text-neutral-900 font-display mt-1">
@@ -220,10 +200,10 @@ export default function SpellingGuideScreen({
                 </p>
 
                 {/* Examples Box */}
-                <div className="bg-neutral-50 border border-neutral-200 rounded p-4 space-y-3">
+                <div className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 space-y-3">
                   <div className="text-[10px] uppercase font-mono font-bold tracking-widest text-neutral-500 flex items-center gap-1.5">
                     <Sparkles className="w-3 h-3 text-amber-500" />
-                    DepEd Official Examples:
+                    Examples:
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -232,7 +212,7 @@ export default function SpellingGuideScreen({
                       return (
                         <div
                           key={idx}
-                          className="bg-white border border-neutral-200 rounded p-3 flex items-start justify-between gap-3 shadow-2xs hover:border-neutral-300 transition-colors"
+                          className="bg-white border border-neutral-200 rounded-xl p-3 flex items-start justify-between gap-3 shadow-2xs hover:border-neutral-300 transition-colors"
                         >
                           <div className="space-y-1 min-w-0 flex-1">
                             <div className="flex items-center gap-2">
@@ -252,7 +232,7 @@ export default function SpellingGuideScreen({
 
                           <button
                             onClick={() => handlePlayAudio(ex.word)}
-                            className={`p-1.5 rounded border shrink-0 transition-all ${
+                            className={`p-1.5 rounded-xl border shrink-0 transition-all ${
                               isPlaying
                                 ? "bg-neutral-900 text-white border-neutral-900 animate-pulse"
                                 : "bg-neutral-50 text-neutral-500 hover:text-neutral-900 border-neutral-200 hover:border-neutral-300"
@@ -275,8 +255,8 @@ export default function SpellingGuideScreen({
       {/* Grammar Tab */}
       {activeTab === "grammar" && (
         <div className="space-y-6" id="grammar-view">
-          <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 flex items-start gap-3 text-xs text-blue-800">
-            <Info className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+          <div className="bg-neutral-100 border border-transparent rounded-2xl p-4 flex items-start gap-3 text-xs text-neutral-800">
+            <Info className="w-4 h-4 text-neutral-400 shrink-0 mt-0.5" />
             <div>
               <span className="font-bold uppercase tracking-wider text-[10px]">Structure Overview:</span> Botolan Sambal is a predicate-initial language with an elegant nominal marking system that separates personal individuals (e.g. <em>hi Linda, ni Toto, koni Nini</em>) from common nouns (e.g. <em>ya bali, na bake, ha lamisa</em>).
             </div>
@@ -286,7 +266,7 @@ export default function SpellingGuideScreen({
             {GRAMMAR_SECTIONS.map((sec) => (
               <div
                 key={sec.id}
-                className="bg-white border border-neutral-200 rounded-lg p-5 shadow-sm space-y-4"
+                className="bg-white border border-neutral-200 rounded-2xl p-5 space-y-4"
                 id={`grammar-sec-${sec.id}`}
               >
                 <div className="border-b border-neutral-100 pb-3">
@@ -304,7 +284,7 @@ export default function SpellingGuideScreen({
 
                 {/* Table if present */}
                 {sec.table && (
-                  <div className="overflow-x-auto border border-neutral-200 rounded">
+                  <div className="overflow-x-auto border border-neutral-200 rounded-xl">
                     <table className="w-full text-left text-xs border-collapse">
                       <thead>
                         <tr className="bg-neutral-100 border-b border-neutral-200">
@@ -331,7 +311,7 @@ export default function SpellingGuideScreen({
                 )}
 
                 {/* Sample Sentences */}
-                <div className="bg-neutral-50 border border-neutral-200 rounded p-4 space-y-2.5">
+                <div className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 space-y-2.5">
                   <div className="text-[10px] uppercase font-mono font-bold tracking-widest text-neutral-500">
                     Sample Sentences & Breakdowns:
                   </div>
@@ -342,7 +322,7 @@ export default function SpellingGuideScreen({
                       return (
                         <div
                           key={idx}
-                          className="bg-white border border-neutral-200 rounded p-3 flex items-start justify-between gap-3 text-xs"
+                          className="bg-white border border-neutral-200 rounded-xl p-3 flex items-start justify-between gap-3 text-xs"
                         >
                           <div className="space-y-1 flex-1">
                             <div className="flex items-baseline gap-2">
@@ -367,7 +347,7 @@ export default function SpellingGuideScreen({
 
                           <button
                             onClick={() => handlePlayAudio(ex.sentence)}
-                            className={`p-1.5 rounded border shrink-0 transition-all ${
+                            className={`p-1.5 rounded-xl border shrink-0 transition-all ${
                               isPlaying
                                 ? "bg-neutral-900 text-white border-neutral-900 animate-pulse"
                                 : "bg-neutral-50 text-neutral-500 hover:text-neutral-900 border-neutral-200 hover:border-neutral-300"
@@ -401,7 +381,7 @@ export default function SpellingGuideScreen({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Filter letters or examples..."
-                className="w-full pl-9 pr-3 py-1.5 bg-white border border-neutral-200 rounded text-xs placeholder-neutral-400 text-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-400 shadow-2xs"
+                className="w-full pl-9 pr-3 py-1.5 bg-white border border-neutral-200 rounded-xl text-xs placeholder-neutral-400 text-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-400 shadow-2xs"
               />
             </div>
           </div>
@@ -412,12 +392,12 @@ export default function SpellingGuideScreen({
               return (
                 <div
                   key={alpha.letter}
-                  className="bg-white border border-neutral-200 rounded-lg p-4 shadow-sm hover:border-neutral-300 transition-all space-y-3"
+                  className="bg-white border border-neutral-200 rounded-2xl p-4 hover:border-neutral-300 transition-all space-y-3"
                   id={`letter-card-${alpha.letter.replace(/\s+/g, '')}`}
                 >
                   <div className="flex items-center justify-between border-b border-neutral-100 pb-2">
                     <div className="flex items-center gap-3">
-                      <span className="w-9 h-9 rounded bg-neutral-900 text-white font-display font-bold text-lg flex items-center justify-center">
+                      <span className="w-9 h-9 rounded-xl bg-neutral-900 text-white font-display font-bold text-lg flex items-center justify-center">
                         {alpha.upperLower.split(" ")[0]}
                       </span>
                       <div>
@@ -432,7 +412,7 @@ export default function SpellingGuideScreen({
 
                     <button
                       onClick={() => handlePlayAudio(alpha.sampleWord)}
-                      className={`p-1.5 rounded border transition-all ${
+                      className={`p-1.5 rounded-xl border transition-all ${
                         isPlaying
                           ? "bg-neutral-900 text-white border-neutral-900 animate-pulse"
                           : "bg-neutral-50 text-neutral-500 hover:text-neutral-900 border-neutral-200 hover:border-neutral-300"
@@ -467,7 +447,7 @@ export default function SpellingGuideScreen({
       {/* Credits Tab */}
       {activeTab === "credits" && (
         <div className="space-y-6" id="credits-view">
-          <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow-sm space-y-4">
+          <div className="bg-white border border-neutral-200 rounded-2xl p-6 space-y-4">
             <div className="border-b border-neutral-100 pb-3">
               <span className="text-[10px] uppercase font-mono tracking-widest text-neutral-500 block font-bold">
                 Publication Metadata
@@ -481,8 +461,8 @@ export default function SpellingGuideScreen({
             </div>
 
             {/* Acknowledgment block in authentic Sambal Botolan */}
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-5 space-y-2">
-              <div className="text-[10px] uppercase font-mono font-bold tracking-widest text-amber-800 flex items-center gap-1.5">
+            <div className="bg-neutral-100 border border-transparent rounded-2xl p-5 space-y-2">
+              <div className="text-[10px] uppercase font-mono font-bold tracking-widest text-neutral-700 flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-amber-600" />
                 Pangikna / Pasasalamat (In Sambal Botolan):
               </div>
@@ -492,19 +472,18 @@ export default function SpellingGuideScreen({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div className="space-y-2 bg-neutral-50 border border-neutral-200 rounded p-4">
+              <div className="space-y-2 bg-neutral-50 border border-neutral-200 rounded-xl p-4">
                 <h4 className="font-bold text-neutral-900 font-display uppercase tracking-wider text-[10px]">
-                  DepEd Region III Leadership
+                  Publication
                 </h4>
                 <ul className="space-y-1.5 text-neutral-600">
-                  <li><strong>Director:</strong> {GUIDE_METADATA.director}</li>
-                  <li><strong>CLMD Chief:</strong> {GUIDE_METADATA.clmdChief}</li>
-                  <li><strong>Regional IPED Focal Person:</strong> {GUIDE_METADATA.regionalFocalPerson}</li>
+                  <li><strong>Edition:</strong> {GUIDE_METADATA.edition}</li>
+                  <li><strong>Publisher:</strong> {GUIDE_METADATA.publisher}</li>
                   <li><strong>Location:</strong> {GUIDE_METADATA.location}</li>
                 </ul>
               </div>
 
-              <div className="space-y-2 bg-neutral-50 border border-neutral-200 rounded p-4">
+              <div className="space-y-2 bg-neutral-50 border border-neutral-200 rounded-xl p-4">
                 <h4 className="font-bold text-neutral-900 font-display uppercase tracking-wider text-[10px]">
                   Linguists & Consultants (SIL Philippines)
                 </h4>
@@ -513,7 +492,7 @@ export default function SpellingGuideScreen({
                 </p>
                 <div className="pt-2">
                   <span className="text-[10px] font-mono text-neutral-500">
-                    Source: DepEd Indigenous Peoples Education (IPED) Mother Tongue Curriculum
+                    Source: Manulat Tamoy Na (2017)
                   </span>
                 </div>
               </div>

@@ -1,12 +1,13 @@
 import { Language, Word, Lesson } from "./types";
+import { MODULE_WORDS, MODULE_LESSONS } from "./data/module5Words";
 
 export const LANGUAGES: Language[] = [
   {
     languageId: 1,
     name: "Botolan Sambal",
     nativeName: "Sambal",
-    region: "Zambales (DepEd Region III & SIL 2017 Guide)",
-    icon: "🌾",
+    region: "Zambales",
+    icon: "wheat",
     enabled: true
   },
   {
@@ -14,7 +15,7 @@ export const LANGUAGES: Language[] = [
     name: "Cebuano",
     nativeName: "Bisaya",
     region: "Visayas & Mindanao",
-    icon: "🌊",
+    icon: "waves",
     enabled: true
   },
   {
@@ -22,12 +23,12 @@ export const LANGUAGES: Language[] = [
     name: "Ilocano",
     nativeName: "Ilokano",
     region: "Ilocos Region & Northern Luzon",
-    icon: "⛰️",
+    icon: "mountain",
     enabled: true
   }
 ];
 
-export const WORDS: Word[] = [
+const BASE_WORDS: Word[] = [
   // --- BOTOLAN SAMBAL (Language ID 1) ---
   {
     wordId: 101,
@@ -67,7 +68,10 @@ export const WORDS: Word[] = [
     word: "Kumusta kawo?",
     meaning: "How are you? (plural/polite)",
     pronunciation: "ku-mus-ta ka-wo",
-    category: "Phrases"
+    category: "Phrases",
+    variant: "Komosta kawo?",
+    note: "Module 5 spells this loanword komosta ('how, quality', from Spanish) with o for u.",
+    source: "Module 5"
   },
   {
     wordId: 106,
@@ -112,10 +116,12 @@ export const WORDS: Word[] = [
   {
     wordId: 111,
     languageId: 1,
-    word: "Hikami",
+    word: "Hikayi",
     meaning: "We (exclusive - excluding you)",
-    pronunciation: "hi-ka-mi",
-    category: "Pronouns"
+    pronunciation: "hi-ka-yi",
+    category: "Pronouns",
+    note: "Module 5: 1st person plural (we, excluding you), full nominative. Minimal form: kayi. Genitive: nawen. Oblique: konnawen.",
+    source: "Module 5; 2017 orthography guide"
   },
   {
     wordId: 112,
@@ -168,10 +174,12 @@ export const WORDS: Word[] = [
   {
     wordId: 118,
     languageId: 1,
-    word: "Alem",
+    word: "Anem",
     meaning: "Six",
-    pronunciation: "a-lem",
-    category: "Numbers"
+    pronunciation: "a-nem",
+    category: "Numbers",
+    note: "Module 5 cardinal 6 is anem (corrected from 'Alem'); the 2017 guide also lists anem (six).",
+    source: "Module 5"
   },
   {
     wordId: 119,
@@ -200,18 +208,23 @@ export const WORDS: Word[] = [
   {
     wordId: 122,
     languageId: 1,
-    word: "Mapolo",
+    word: "Mapò",
     meaning: "Ten",
-    pronunciation: "ma-po-lo",
-    category: "Numbers"
+    pronunciation: "ma-po",
+    category: "Numbers",
+    variant: "mapu (cf. luwampu 20, limampu 50 in the 2017 guide)",
+    note: "Module 5 cardinal 10 is mapò. The same -pò ending appears in lowampò (20) and tatlompò (30).",
+    source: "Module 5"
   },
   {
     wordId: 123,
     languageId: 1,
-    word: "Balay",
+    word: "Bali",
     meaning: "House",
-    pronunciation: "ba-lay",
-    category: "Nouns"
+    pronunciation: "ba-li",
+    category: "Nouns",
+    note: "The 1968 Dictionary of Botolan Sambal gives 'bali' = house, and the 2017 guide's example sentences use bali ('Bali nawen ya bayri').",
+    source: "1968 Dictionary of Botolan Sambal; 2017 orthography guide"
   },
   {
     wordId: 124,
@@ -219,7 +232,8 @@ export const WORDS: Word[] = [
     word: "Lanom",
     meaning: "Water",
     pronunciation: "la-nom",
-    category: "Nouns"
+    category: "Nouns",
+    source: "1968 Dictionary of Botolan Sambal (confirmed)"
   },
   {
     wordId: 125,
@@ -227,7 +241,8 @@ export const WORDS: Word[] = [
     word: "Kanan",
     meaning: "Food",
     pronunciation: "ka-nan",
-    category: "Nouns"
+    category: "Nouns",
+    note: "Not found in Module 5 or the 2017 guide (which use kona 'viand' and ikakan 'something to eat'). Kept from the original word list; verify with a native speaker."
   },
   {
     wordId: 126,
@@ -240,10 +255,12 @@ export const WORDS: Word[] = [
   {
     wordId: 127,
     languageId: 1,
-    word: "Kanen",
+    word: "Mangan",
     meaning: "To eat",
-    pronunciation: "ka-nen",
-    category: "Verbs"
+    pronunciation: "ma-ngan",
+    category: "Verbs",
+    note: "Perfective active: nangan ('Nangan ya anak nin kanen', the child ate some rice). Perfective object focus: kinan. The root is kan; kanen means cooked rice.",
+    source: "Module 5; 2017 orthography guide"
   },
   {
     wordId: 128,
@@ -269,7 +286,7 @@ export const WORDS: Word[] = [
     pronunciation: "lo-ma-teng",
     category: "Verbs"
   },
-  // --- ADDITIONAL VOCABULARY FROM MANULAT TAMOY NA (DEPED ZAMBALES & SIL 2017) ---
+  // --- ADDITIONAL VOCABULARY FROM MANULAT TAMOY NA (2017 ORTHOGRAPHY GUIDE) ---
   // Body Parts (Parti nin Nawini)
   {
     wordId: 131,
@@ -277,7 +294,10 @@ export const WORDS: Word[] = [
     word: "Ulo",
     meaning: "Head",
     pronunciation: "u-lo",
-    category: "Body"
+    category: "Body",
+    variant: "olo",
+    note: "Module 5 writes olo with o for u: 'pitoy oloy' = seven heads.",
+    source: "Module 5"
   },
   {
     wordId: 132,
@@ -317,7 +337,8 @@ export const WORDS: Word[] = [
     word: "Ngipen",
     meaning: "Teeth",
     pronunciation: "ngi-pen",
-    category: "Body"
+    category: "Body",
+    source: "1968 Dictionary of Botolan Sambal (confirmed)"
   },
   {
     wordId: 137,
@@ -333,7 +354,10 @@ export const WORDS: Word[] = [
     word: "Biti",
     meaning: "Foot / Leg",
     pronunciation: "bi-ti",
-    category: "Body"
+    category: "Body",
+    variant: "bitih",
+    note: "The 1968 dictionary writes bitih = foot, leg.",
+    source: "1968 Dictionary of Botolan Sambal"
   },
   {
     wordId: 139,
@@ -358,7 +382,9 @@ export const WORDS: Word[] = [
     word: "Tatay",
     meaning: "Father",
     pronunciation: "ta-tay",
-    category: "Family"
+    category: "Family",
+    note: "The 1968 dictionary lists tata as 'uncle', while the 2017 guide's letter list gives tata as 'father'. Check usage with an elder.",
+    source: "1968 Dictionary of Botolan Sambal; 2017 orthography guide"
   },
   {
     wordId: 142,
@@ -423,7 +449,10 @@ export const WORDS: Word[] = [
     word: "Damuwag",
     meaning: "Carabao (Water Buffalo)",
     pronunciation: "da-mu-wag",
-    category: "Animals"
+    category: "Animals",
+    variant: "damowag",
+    note: "Module 5 spelling: 'Ahè pinati nin tawo ya damowag ko' = The person didn't kill my water buffalo.",
+    source: "Module 5; 2017 orthography guide"
   },
   {
     wordId: 150,
@@ -439,7 +468,8 @@ export const WORDS: Word[] = [
     word: "Poha",
     meaning: "Cat",
     pronunciation: "po-ha",
-    category: "Animals"
+    category: "Animals",
+    source: "1968 Dictionary of Botolan Sambal (confirmed)"
   },
   {
     wordId: 152,
@@ -447,7 +477,8 @@ export const WORDS: Word[] = [
     word: "Manok",
     meaning: "Chicken",
     pronunciation: "ma-nok",
-    category: "Animals"
+    category: "Animals",
+    source: "1968 Dictionary of Botolan Sambal (confirmed)"
   },
   {
     wordId: 153,
@@ -455,7 +486,8 @@ export const WORDS: Word[] = [
     word: "Bake",
     meaning: "Monkey",
     pronunciation: "ba-ke",
-    category: "Animals"
+    category: "Animals",
+    source: "1968 Dictionary of Botolan Sambal (confirmed)"
   },
   {
     wordId: 154,
@@ -471,7 +503,10 @@ export const WORDS: Word[] = [
     word: "Utan",
     meaning: "Snake",
     pronunciation: "u-tan",
-    category: "Animals"
+    category: "Animals",
+    variant: "otan",
+    note: "Module 5 spelling: 'Habayti ya otan ay ma-in pitoy oloy kapapalimo' = This snake had seven frightening heads. Plural: aw-otan.",
+    source: "Module 5; 2017 orthography guide"
   },
   {
     wordId: 156,
@@ -479,7 +514,8 @@ export const WORDS: Word[] = [
     word: "Pag-ong",
     meaning: "Turtle",
     pronunciation: "pag-ong",
-    category: "Animals"
+    category: "Animals",
+    source: "1968 Dictionary of Botolan Sambal (confirmed)"
   },
   {
     wordId: 157,
@@ -568,7 +604,8 @@ export const WORDS: Word[] = [
     word: "Bagoyboy",
     meaning: "Tiger grass (broom plant)",
     pronunciation: "ba-goy-boy",
-    category: "Plants"
+    category: "Plants",
+    source: "1968 Dictionary of Botolan Sambal (confirmed)"
   },
   // Nature & Places (Dawdogal)
   {
@@ -577,7 +614,9 @@ export const WORDS: Word[] = [
     word: "Bakil",
     meaning: "Mountain / Forest",
     pronunciation: "ba-kil",
-    category: "Places"
+    category: "Places",
+    note: "The 1968 dictionary glosses bakil as 'hill' (reduplicated: a small hill); the 2017 guide and its stories use it for mountain and forest.",
+    source: "1968 Dictionary of Botolan Sambal; 2017 orthography guide"
   },
   {
     wordId: 169,
@@ -601,7 +640,8 @@ export const WORDS: Word[] = [
     word: "Himba-an",
     meaning: "Church",
     pronunciation: "him-ba-an",
-    category: "Places"
+    category: "Places",
+    source: "1968 Dictionary of Botolan Sambal (confirmed)"
   },
   {
     wordId: 172,
@@ -649,7 +689,10 @@ export const WORDS: Word[] = [
     word: "Buwan",
     meaning: "Moon / Month",
     pronunciation: "bu-wan",
-    category: "Nature"
+    category: "Nature",
+    variant: "bowan",
+    note: "The 1968 dictionary writes bowan = month.",
+    source: "1968 Dictionary of Botolan Sambal"
   },
   // Time & Days (Hawhalita ha Oras)
   {
@@ -682,7 +725,8 @@ export const WORDS: Word[] = [
     word: "Yabi",
     meaning: "Night / Evening",
     pronunciation: "ya-bi",
-    category: "Time"
+    category: "Time",
+    source: "1968 Dictionary of Botolan Sambal (confirmed)"
   },
   {
     wordId: 182,
@@ -698,7 +742,9 @@ export const WORDS: Word[] = [
     word: "Hapa-eg",
     meaning: "Now / Today",
     pronunciation: "ha-pa-eg",
-    category: "Time"
+    category: "Time",
+    note: "Module 5: 'Hapa-eg, hi Ripolyo ay nag-in katowà ya papwak' = Now, Ripolyo became an ugly frog.",
+    source: "Module 5"
   },
   {
     wordId: 184,
@@ -722,7 +768,8 @@ export const WORDS: Word[] = [
     word: "Dominggo",
     meaning: "Sunday",
     pronunciation: "do-ming-go",
-    category: "Time"
+    category: "Time",
+    source: "1968 Dictionary of Botolan Sambal (confirmed)"
   },
   // Verbs (Aw-Ilgo nin Galaw)
   {
@@ -812,15 +859,19 @@ export const WORDS: Word[] = [
     word: "Ayri",
     meaning: "Where",
     pronunciation: "ay-ri",
-    category: "Questions"
+    category: "Questions",
+    note: "Module 5's sentence 'Ayri ka ampa-iri?' (Where are you living?) and 'ayripaman' (wherever) show it means 'where'. (Module 5's pronoun list glosses ayri as 'what', which conflicts with its own example; anya is 'what'.)",
+    source: "Module 5; 2017 orthography guide"
   },
   {
     wordId: 198,
     languageId: 1,
     word: "Makano",
-    meaning: "When",
+    meaning: "When (future)",
     pronunciation: "ma-ka-no",
-    category: "Questions"
+    category: "Questions",
+    note: "Module 5: makano = when (future); nakano = when (past).",
+    source: "Module 5"
   },
   {
     wordId: 199,
@@ -1324,7 +1375,9 @@ export const WORDS: Word[] = [
   }
 ];
 
-export const LESSONS: Lesson[] = [
+export const WORDS: Word[] = [...BASE_WORDS, ...MODULE_WORDS];
+
+const BASE_LESSONS: Lesson[] = [
   // Botolan Sambal Lessons (1xx)
   {
     lessonId: 101,
@@ -1357,7 +1410,7 @@ export const LESSONS: Lesson[] = [
     lessonId: 104,
     languageId: 1,
     title: "Around the Home",
-    nativeTitle: "Lobos ya Balay",
+    nativeTitle: "Lobos ya Bali",
     wordRefs: [123, 124, 125, 126],
     xpReward: 50,
     lessonNumber: 4
@@ -1538,3 +1591,5 @@ export const LESSONS: Lesson[] = [
     lessonNumber: 5
   }
 ];
+
+export const LESSONS: Lesson[] = [...BASE_LESSONS, ...MODULE_LESSONS];

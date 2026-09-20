@@ -1,0 +1,202 @@
+import type { CourseModule } from "./botolanModules";
+
+/**
+ * Module 6 – Prominent Botoleños and Historical Places, Landmarks, Landscapes
+ * and Tourist Destinations. Facts, names, dates, figures and prices are kept
+ * as the module gives them; the source articles are summarised in our own words.
+ */
+
+export const MODULE_6: CourseModule = {
+  id: "module-6",
+  label: `Module 6`,
+  title: `Prominent Botoleños & Places to Explore`,
+  lesson: `Prominent Botoleños and their Contributions; Historical Places, Landmarks, Landscapes and Other Tourist Destinations`,
+  code: `PR-WK-11 to WK-12`,
+  semester: `1st Sem 2024-2025`,
+  objectives: [
+    `Identify and appreciate the contributions of Botoleños towards nation-building and be inspired by their exemplary works/lives.`,
+    `Support the preservation of the historical places in Botolan for future generations, and promote scenic places for appreciation, conservation and income-generation.`,
+  ],
+  sections: [
+    {
+      id: "m6-info",
+      title: `Module information & activities`,
+      blocks: [
+        {
+          t: "table",
+          headers: [`Item`, `Detail`],
+          rows: [
+            [`School`, `Polytechnic College of Botolan (formerly Botolan Community College), Botolan, Zambales`],
+            [`Institute`, `Institute of Computing Studies – Student Learning Module (SLM)`],
+            [`Course`, `Free Elective – Botolan History and Culture`],
+            [`Semester & year`, `1st Sem 2024-2025`],
+            [`Year level`, `4`],
+            [`Module No.`, `PR-WK-11 to WK-12`],
+            [`Module model`, `TORCH`],
+            [`Instructor`, `Edelwise S. Ignacio`],
+          ],
+        },
+        { t: "note", text: `Module note: do not write on the module; use the answer sheets provided. Answer all activities. Honesty is the best policy.` },
+        { t: "h", text: `Activity 1` },
+        { t: "list", items: [`Give at least 3 prominent Botoleños (IPs or non-IPs) that you know who contribute to the development of Botolan.`] },
+        { t: "h", text: `Activity 2` },
+        { t: "list", items: [`Name historical places, landmarks, landscapes and other tourist destinations in Botolan. Describe each in your own words.`] },
+      ],
+    },
+    {
+      id: "m6-ips",
+      title: `Prominent Botoleños: Indigenous Peoples (IPs)`,
+      blocks: [
+        { t: "h", text: `Carlito Domulot` },
+        { t: "p", text: `Featured in "Domulot's: Uplifting the lives & uniting the Aeta community" (The Good News Pilipinas Team, May 15, 2016).` },
+        { t: "list", items: [
+          `A tribe chieftain of the Aeta at the foot of Mt. Pinatubo. When the tribe faced losing stewardship of its ancestral land to land grabbers, he fought to secure their right to it, and the tribe earned one of the first Ancestral Domain titles.`,
+          `He recognized the power of education, equipped himself with knowledge and skill to pass on to his tribe, and believes education is the way for the Aetas to keep up with the times and understand their rights as members of society.`,
+          `Family members pursued professions for the benefit of the community: daughters Carol (teaches the tribe's daycare) and Karen (teaches the high school students); eldest son Christopher (studying urban farming in Japan to strengthen the tribe's organic farming); younger brother Noel (dreams of becoming a lawyer for the Aetas).`,
+          `The family helped build a school and sought help from organizations to provide school supplies to underprivileged students. Their literacy and livelihood programs have benefitted 5,000 families.`,
+          `Active in the Lubos ng Alyansa ng mga Katutubong Ayta sa Sambales (LAKAS); Carlito is now its adviser and continues literacy programs for Aeta communities.`,
+          `Invited to share their advocacy and mission around the world; awardees of the 5th Jollibee Family Values Awards.`,
+          `The family helped acquire and protect the ancestral domain for more than 50,000 Aeta families (printed "50, 0000" in the module) and continues its traditional practices while adding lessons from the modern world.`,
+          `Family members named in the photo caption: Ama, Tubag, Caren, Nitnit, Noel, Carol, Kenneth, Carmen, Carlito Jr., with Carlito and Iril.`,
+        ]},
+        { t: "h", text: `Joan Cosme (Juana Cosme)` },
+        { t: "list", items: [
+          `An aspiring singer from Botolan, Zambales, described as having a powerful, emotional voice in the power-ballad style; her musical influences named are Bonnie Tyler, Bon Jovi and Arnel Pineda.`,
+          `She sees her singing voice as a gift from God that brought joy, health and life to her family. She started singing because of her father, who played the radio for her to sing along with and later polished her voice by letting her practice with karaoke.`,
+          `Some of her singles: Basang Sisiw, Binago Mo, Estudyante Blues, Ibong Ligaw.`,
+        ]},
+        { t: "h", text: `Wayda Cosme – first Aeta lawyer in Philippine history` },
+        { t: "list", items: [
+          `At age 26 she became the first Aeta lawyer in Philippine history after passing the 2001 bar exams. She finished college and a law degree at the Harvardian Colleges in San Fernando, Pampanga, relying on scholarships and stipends.`,
+          `She worked as a lawyer (legal analyst) for Clark Development Corp. (CDC), which runs the Clark Special Economic Zone.`,
+          `GMA's "Magpakailanman" featured her story with Jolina Magdangal playing Wayda; Magdangal earned praise and commendation at the 2003 Asian Television Awards.`,
+          `Her parents, Roberto and Milagros, are from Villar Village (formerly Ugek), 10 km from the volcano's crater. After the Mt. Pinatubo eruption the Cosme family was displaced and evacuated, and later settled in Botolan, Zambales.`,
+          `Her studies at Sto. Niño High School in Botolan were supported by the Jaime Ongpin Foundation. She finished an English course at Guagua National College in Pampanga while working as a house helper. In 2001 she finished Law School at Harvardian College with help from the Holy Trinity Church in Makati City and Jennifer Wallum, a member of the British Empire and founder of the Entrepreneur Volunteer Assistance Charity Foundation.`,
+        ]},
+        { t: "p", text: `Her story inspires the Aeta community and other minority groups: through education you can make a difference and not remain a slave of poverty. Her father's advice, which she remembers in hard times, is that you go to school not only to help yourself but also to help fellow Aetas.` },
+        { t: "h", text: `Difficulties she faced` },
+        { t: "list", items: [
+          `Discrimination: classmates judged her by her skin color and looks (Aetas are labeled house helpers, beggars and lazy people from the mountains), and some fellow Aetas did not believe in her dream or in education as a tool for success.`,
+          `Lack of money: her scholarship allowance was sometimes late, so her parents had to find money to sustain her education.`,
+          `Family support: her father Roberto, who finished elementary and learned to read, write and count, was her number one supporter, encouraged by the American couple Fred and Virginia Pennoyer, who spent 20 years of Protestant missionary work in Villar. He worked as a government employee in Zambales. Her mother Milagros did not fully support the plan and feared what Wayda would face in the city.`,
+          `Lack of government support for education: specialized programs and reading, writing and instructional materials suited to minorities are needed.`,
+        ]},
+        { t: "h", text: `Other names listed in the module` },
+        { t: "list", items: [
+          `Mariel Abujen`,
+          `Angel Marcellano`,
+          `Cielo Honasan`,
+          `Jezrel Doble`,
+          `Teresita Magtanong`,
+        ]},
+        { t: "note", text: `The module lists these five names as headings without any description.` },
+      ],
+    },
+    {
+      id: "m6-tourism",
+      title: `Botolan: Yours to Explore (tourism)`,
+      blocks: [
+        { t: "p", text: `Summary of "Botolan: Yours to Explore" by Henry Empeño. Botolan's tourism industry is rising from the ashes of the June 1991 explosive eruption of Mount Pinatubo. Its attractions include the famous crater lake, chilly mountain rivers and falls, expansive lahar fields and sand dunes, and tropical mangroves and beaches. The scars of the wounded land have become popular destinations for tourists and residents alike.` },
+        { t: "list", items: [
+          `Botolan is the biggest municipality in Zambales by land area. The 1991 eruption displaced many residents and disrupted their economic footing, so the town turned to tourism to find more jobs.`,
+          `In 2016 the town first considered a Mt. Pinatubo tour via Botolan, when packages via Capas, Tarlac dominated the eco-adventure market. In May 2016 the tourism team found a viable, if longer, route through the Bucao River lahar fields, and regular guided tours via Botolan began.`,
+          `In the same year the town established Camp Kainomayan, a recreational facility near the Bucao River in Barangay San Juan, which rented out all-terrain vehicles (ATVs) and is the starting point of the two-hour 4×4 ride to the Pinatubo crater lake. The camp began with five ATVs rented out on weekends.`,
+          `The tour grew to include Tukal-Tukal Falls, an ATV adventure ride to Lomboy Lake (Malomboy Lake), and kayak and boat rides along the Bancal River.`,
+          `Most weekends the camp fills as early as 5:00 a.m. with as many as 200 people waiting for the 4×4 ride to Pinatubo; many stay overnight to trek to Tukal-Tukal Falls the next day.`,
+          `The Pinatubo tour caters mostly to young, adventurous visitors from Manila and nearby areas, but with bed and breakfast facilities and restaurants the visitor profile is widening to company team-building, weddings, pre-nuptial shoots and birthday celebrations.`,
+          `On March 23, Camp Kainomayan's celebrity endorser Amanda Fernandez (vlogger, commercial model and ESPN 5 anchor) inaugurated new facilities: a tourist center and installations for wall-climbing, rappelling, paintball war games, an obstacle course and a zip line.`,
+        ]},
+        { t: "h", text: `Camp Kainomayan rates (as quoted in the module)` },
+        { t: "table", headers: [`Activity`, `Price`], rows: [
+          [`Wall-climbing`, `P200 per person`],
+          [`Rappelling`, `P150`],
+          [`Zip line`, `P200`],
+          [`Obstacle course`, `P100`],
+          [`Paintball`, `P170 for 25 loads`],
+          [`ATV ride`, `P300 per 15 minutes; P500 for 30 minutes; P800 per hour`],
+          [`"Lahar adventure" ATV package to Malomboy Lake`, `P1,500`],
+          [`Pinatubo crater lake adventure`, `P1,400 per person, inclusive of the 4×4 ride, tour guide, ecotourism fee, IP cultural heritage fee and environmental protection fee`],
+          [`Tukal-Tukal Falls package`, `P500 per person, with similar inclusions`],
+          [`Camping fee`, `P100 per person per night`],
+          [`Tent rental`, `P150 each`],
+        ]},
+        { t: "note", text: `Both the Pinatubo and Tukal-Tukal packages require a minimum of five participants. Prices are as quoted in the article and may have changed.` },
+        { t: "list", items: [
+          `A swimming pool was planned, and a garden-playground developed under several stands of agoho trees. Existing facilities covered only two of the five-hectare camp property; the rest was to be developed as a campsite.`,
+          `Kainomayan roughly translates to well-being in Sambal, and by extension can mean progress. Architect Iska Cruz, head of tourism in the town, said the visitor influx brought more jobs and businesses, including rooms for rent and small restaurants.`,
+          `The Bancal River boating area grew to include kayaking, pedal boats, motorboats and guided mangrove tours. Other attractions named: the four-tiered Tukal-Tukal Falls (an emerging major attraction) and Capayawan Beach.`,
+          `The tourism boom was described as an unexpected gift, as if Nature made amends for the destruction.`,
+        ]},
+        { t: "h", text: `Botolan Wildlife Farm` },
+        { t: "p", text: `A 55,000 square-meter privately-owned wildlife sanctuary that is also a national quarantine, rescue and rehabilitation zone for diverse fauna in Zambales. Don't miss the wildlife "Rockstar", Ramses. Location: Brgy. San Juan, Botolan, Zambales 2202.` },
+      ],
+    },
+    {
+      id: "m6-history",
+      title: `Historical places: Fort Paynauen, Sta. Monica & Ina Poon Bato`,
+      blocks: [
+        { t: "h", text: `Fort Paynauen (Playa Honda)` },
+        { t: "list", items: [
+          `A historic fortress whose moss-covered walls still stand on the bank of the Bancal River in Barrio Pader, Botolan. It was once the most formidable Spanish garrison in Central Luzon during the first century of Spanish rule. Also known as Playa Honda.`,
+          `Built on the advice of Spanish Admiral Pedro Duran de Monforte to Governor General Diego de Salcedo (administration 1663-1668), who had to face continuous uprisings by the inhabitants of the province, also known as the province of Playa Honda.`,
+          `Paynauen is the original name of Iba.`,
+          `In 1617, off the coast of Zambales, the Spaniards led by Juan Ronquillo destroyed three of six Dutch ships led by Admiral John Derickson Lamb in a two-day battle, known in history as the second battle of Playa Honda, part of a series of early 17th-century Dutch attacks on the Philippines.`,
+          `The fort served as a prison for recalcitrant natives of Zambales and for Spanish officials who angered the Governor General or the Archbishop of Manila. Under Governor General Juan de Vargas Hurtado (1678-1684; written "Hurlado" in the module), who was on bad terms with Archbishop Don Felipe Pardo, Vargas' trusted followers were jailed there once Archbishop Pardo became powerful.`,
+        ]},
+        { t: "h", text: `Church of Sta. Monica` },
+        { t: "p", text: `An impressive coral limestone church built in 1700 and finished around the last quarter of the 19th century. It has a moss-covered, one-storey Baroque façade with a semicircular arch main entrance, flanked by two semicircular arch niches holding statues of St. Augustine and St. Monica.` },
+        { t: "h", text: `Ina Poon Bato – the Doting Queen of Zambales` },
+        { t: "list", items: [
+          `In isolated Zambales, where the Aetas have lived for millennia, there is a humble shrine to which Zambaleños have flocked for years, even before the Spanish missionaries arrived. It is the wonder of Nuestra Señora dela Paz of Zambales, popularly known as Ina Poon Bato or "Apo Apang" to Zambaleños.`,
+          `Devotees come from Zambales, neighboring provinces, Metro Manila, Southern Luzon, the Visayas, Mindanao and even abroad, and several miracles are reported through her intercession.`,
+          `The venerated image is a wooden de tallado image based on the original statue, which is kept at the Church of the Iglesia Filipina Independiente (the Aglipayan Church). It looks at the beholder, with flowing black hair and hands in a gesture of prayer or offering.`,
+          `She wears a white dress with a blue cape, mimicking the style of Nuestra Señora de la Paz y Buen Viaje of Antipolo, Rizal, with carved designs on the cape. The image stands on a stony base as a reminder of how she was found by an Aeta.`,
+        ]},
+      ],
+    },
+    {
+      id: "m6-lists",
+      title: `More places and destinations (names in the module)`,
+      blocks: [
+        { t: "p", text: `The module lists these places under "Historical Places, Landmarks, Landscapes and Other Tourist Destinations" without further description:` },
+        { t: "list", items: [
+          `Sundowners`, `Bangan Beach`, `Kalinto`, `Villa Elisa`, `C&J`, `Haya`, `Villa`, `Poggio`, `Madison`,
+          `Peny Resort`, `Mardex Resort`, `Caribe`, `Palasyo`, `Nahiko River`, `Bucao Bridge and River`,
+          `Mt. Calibungan`, `Index`, `Paudpod`, `Binoclutan Falls`, `Bulogto`, `Sitio Alao`, `Beaches`,
+        ]},
+        { t: "p", text: `Places also described above: Mt. Pinatubo crater lake, Camp Kainomayan, Tukal-Tukal Falls, Lomboy (Malomboy) Lake, Bancal River, Capayawan Beach, Botolan Wildlife Farm, Fort Paynauen, Church of Sta. Monica and Ina Poon Bato.` },
+      ],
+    },
+    {
+      id: "m6-summary",
+      title: `Summary, quiz, assignment & references`,
+      blocks: [
+        { t: "h", text: `Summary` },
+        { t: "p", text: `Prominent Botoleños who made an impact: Carlito Domulot, Joan Cosme (Juana Cosme) and Wayda Cosme.` },
+        { t: "p", text: `Places that attract attention: the Pinatubo crater tour (the top attraction for Zambales tourism); Camp Kainomayan in Barangay San Juan near the Bucao River (ATVs, 4×4 ride to the crater lake, tourist center, wall-climbing, rappelling, paintball, obstacle course, zip line); the four-tiered Tukal-Tukal Falls; the beaches and beach resorts; the Botolan Wildlife Farm; and historical places such as Fort Paynauen (Playa Honda), the Sta. Monica Church, Ina Poon Bato Church and Nuestra Señora dela Paz of Zambales ("Ina Poon Bato" or "Apo Apang").` },
+        { t: "h", text: `Quiz #8` },
+        { t: "list", items: [
+          `Who among the prominent Botoleños inspires you with their exemplary works/lives? Discuss why.`,
+          `How can you help preserve the historical places in Botolan for future generations?`,
+          `How will you promote historical places, landmarks, landscapes and other tourist destinations in Botolan?`,
+        ]},
+        { t: "h", text: `Assignment` },
+        { t: "list", items: [`Make a video presentation of the historical places, landmarks, landscapes and other tourist destinations in Botolan.`] },
+        { t: "h", text: `References` },
+        { t: "list", items: [
+          `http://www.rochellerivera.com/2015/10/new-batch-of-exemplary-filipino.html`,
+          `https://open.spotify.com/artist/7tEBasQc8ILfYXXsNXzI7S`,
+          `https://www.facebook.com/TheFilipinoPatriots/posts/wayda-cosmefirst-aeta-lawyer-in-philippine-historyat-the-age-of-26-cosme-became-/2457684170919556/`,
+          `http://jbinx.blogspot.com/2009/01/wayda.html`,
+          `https://peoplaid.com/2019/02/15/famous-people-zambales/`,
+          `https://en-academic.com/dic.nsf/enwiki/843975`,
+          `https://everything.explained.today/Botolan/`,
+          `https://www.reddoorz.com/blog/ph/places-to-visit-ph/undiscovered-beautiful-places-in-zambales-you-should-visit`,
+          `http://www.visitmyphilippines.com/index_title_Historical_func_all_pid_4384_tbl_0.html`,
+          `https://www.facebook.com/ThisIsMyZambales/photos/pcb.421807124953049/421805444953217`,
+          `https://pintakasi1521.blogspot.com/2017/01/ina-poon-bato-doting-queen-of-zambales.html`,
+        ]},
+      ],
+    },
+  ],
+};

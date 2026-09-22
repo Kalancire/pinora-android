@@ -4,6 +4,9 @@ import PageHeader from "./ui/PageHeader";
 import { TtsManager } from "../utils/tts";
 import { Block, CourseModule, COURSE_MODULES_A } from "../data/botolanModules";
 import { MODULE_6 } from "../data/botolanModule6";
+import { UserProgress } from "../types";
+import { CheckCircle2, Circle } from "lucide-react";
+import { playSfx } from "../utils/sfx";
 
 const MODULES: CourseModule[] = [...COURSE_MODULES_A, MODULE_6];
 
@@ -114,7 +117,7 @@ function RenderBlock({ b, audio }: { b: Block; audio?: boolean }): React.ReactEl
   }
 }
 
-export default function BotolanModulesScreen({ onBackToHome }: { key?: string; onBackToHome: () => void }) {
+export default function BotolanModulesScreen({ embedded, progress, update }: { key?: string; embedded?: boolean; progress?: UserProgress; update?: (fn: (p: UserProgress) => UserProgress) => void; onBackToHome: () => void }) {
   const [moduleId, setModuleId] = useState(MODULES[1].id);
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState<Record<string, boolean>>({});
@@ -129,10 +132,10 @@ export default function BotolanModulesScreen({ onBackToHome }: { key?: string; o
     );
   }, [mod, q]);
 
+  const isRead = !!progress?.readModules?.includes(mod.id);
+
   return (
     <div className="space-y-6" id="botolan-modules-screen">
-      <PageHeader title="Culture" subtitle="Botolan history, IKSPs, language and people (Modules 4 to 6)." />
-
       <div className="flex gap-2 overflow-x-auto pb-1">
         {MODULES.map((m) => (
           <button
@@ -198,6 +201,18 @@ export default function BotolanModulesScreen({ onBackToHome }: { key?: string; o
           );
         })}
       </div>
+      {update && (
+        <button
+          onClick={() => {
+            if (isRead) return;
+            playSfx("correct");
+            update((p) => ({ ...p, readModules: [...(p.readModules || []), mod.id] }));
+          }}
+          className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-sm font-semibold ${isRead ? "bg-neutral-100 text-neutral-500" : "bg-neutral-900 text-white"}`}
+        >
+          {isRead ? <CheckCircle2 className="w-4 h-4" /> : <Circle className="w-4 h-4" />} {isRead ? "Read" : "Mark as read"}
+        </button>
+      )}
     </div>
   );
 }

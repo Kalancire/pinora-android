@@ -10,21 +10,34 @@ import {
   saveNative,
 } from "./lib/progress";
 import { setSfxEnabled, playSfx } from "./utils/sfx";
+import { I18nProvider } from "./lib/i18n";
+import { refreshIndex } from "./lib/recordings";
 import HomeScreen from "./components/HomeScreen";
 import LearnScreen from "./components/LearnScreen";
 import LessonScreen from "./components/LessonScreen";
 import DictionaryScreen from "./components/DictionaryScreen";
 import SpellingGuideScreen from "./components/SpellingGuideScreen";
 import StoriesScreen from "./components/StoriesScreen";
-import BotolanModulesScreen from "./components/BotolanModulesScreen";
+import CultureScreen from "./components/CultureScreen";
 import SettingsScreen from "./components/SettingsScreen";
+import ReviewScreen from "./components/ReviewScreen";
+import SentenceBuilderScreen from "./components/SentenceBuilderScreen";
+import PhrasebookScreen from "./components/PhrasebookScreen";
+import SpeakScreen from "./components/SpeakScreen";
+import PlacementScreen from "./components/PlacementScreen";
+import SuggestScreen from "./components/SuggestScreen";
 import BottomNav, { TabId } from "./components/ui/BottomNav";
+
+type Overlay =
+  | "lesson" | "settings" | "review" | "sentences" | "phrasebook" | "speak" | "placement" | "suggest" | null;
 
 export default function App() {
   const [tab, setTab] = useState<TabId>("home");
-  const [overlay, setOverlay] = useState<"lesson" | "settings" | null>(null);
+  const [overlay, setOverlay] = useState<Overlay>(null);
   const [activeLesson, setActiveLesson] = useState<Lesson | null>(null);
   const [lessonStartMode, setLessonStartMode] = useState<"study" | "quiz">("study");
+  const [speakStartId, setSpeakStartId] = useState<string | undefined>(undefined);
+  const [suggestPre, setSuggestPre] = useState<{ wordId?: number; word?: string }>({});
 
   const [progress, setProgress] = useState<UserProgress>(loadLocal);
   const hydrated = useRef(false);
@@ -32,8 +45,8 @@ export default function App() {
 
   const activeLanguageId = progress.activeLanguageId ?? 1;
 
-  // On Android, restore from the file in the app folder if it is newer than local storage.
   useEffect(() => {
+    refreshIndex();
     let alive = true;
     loadNative().then((file) => {
       if (!alive) return;
@@ -46,7 +59,6 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Save on every change: local storage right away, the app-folder file shortly after.
   useEffect(() => {
     setSfxEnabled(progress.soundOn !== false);
     saveLocal(progress);
@@ -63,10 +75,20 @@ export default function App() {
     });
   }, []);
 
+  const addXp = useCallback((xp: number) => {
+    if (xp <= 0) return;
+    update((p) => applyLessonResult(p, -1, xp, [], []));
+  }, [update]);
+
   const goTab = (t: TabId) => {
     setTab(t);
     setOverlay(null);
     setActiveLesson(null);
+    window.scrollTo({ top: 0 });
+  };
+
+  const openOverlay = (o: Overlay) => {
+    setOverlay(o);
     window.scrollTo({ top: 0 });
   };
 
@@ -77,7 +99,7 @@ export default function App() {
     window.scrollTo({ top: 0 });
   };
 
-  const closeLesson = () => {
+  const closeOverlay = () => {
     setOverlay(null);
     setActiveLesson(null);
   };
@@ -88,7 +110,7 @@ export default function App() {
     update((p) => applyLessonResult(p, id, xp, made, corrected));
     playSfx("complete");
     setTab(id === -1 ? "learn" : "home");
-    closeLesson();
+    closeOverlay();
   };
 
   const resetAll = () => {
@@ -97,78 +119,128 @@ export default function App() {
     setTab("home");
   };
 
+  const openSuggest = (wordId?: number, prefill?: string) => {
+    setSuggestPre({ wordId, word: prefill });
+    openOverlay("suggest");
+  };
+
   const inLesson = overlay === "lesson" && activeLesson;
   const noop = () => {};
 
   return (
-    <div className="min-h-screen bg-neutral-50 text-neutral-900 font-sans selection:bg-neutral-200" id="main-root-container">
-      <main
-        className="mx-auto w-full max-w-2xl px-4 sm:px-6"
-        style={{
-          paddingTop: "max(env(safe-area-inset-top), 16px)",
-          paddingBottom: inLesson ? "32px" : "128px",
-        }}
-        id="app-viewport"
-      >
-        <AnimatePresence mode="wait">
-          {inLesson && (
-            <LessonScreen
-              key={`lesson-${activeLesson!.lessonId}`}
-              lesson={activeLesson!}
-              progress={progress}
-              onBackToHome={closeLesson}
-              onLessonComplete={completeLesson}
-              startMode={lessonStartMode}
-            />
-          )}
+    <I18nProvider lang={progress.uiLang || "en"}>
+      <div className="min-h-screen bg-neutral-50 text-neutral-900 font-sans selection:bg-neutral-200" id="main-root-container">
+        <main
+          className="mx-auto w-full max-w-2xl px-4 sm:px-6"
+          style={{
+            paddingTop: "max(env(safe-area-inset-top), 16px)",
+            paddingBottom: inLesson ? "32px" : "128px",
+          }}
+          id="app-viewport"
+        >
+          <AnimatePresence mode="wait">
+            {inLesson && (
+              <LessonScreen
+                key={`lesson-${activeLesson!.lessonId}`}
+                lesson={activeLesson!}
+                progress={progress}
+                onBackToHome={closeOverlay}
+                onLessonComplete={completeLesson}
+                startMode={lessonStartMode}
+              />
+            )}
 
-          {!inLesson && overlay === "settings" && (
-            <SettingsScreen
-              key="settings"
-              progress={progress}
-              onChange={(patch) => update(patch)}
-              onReset={resetAll}
-              onBack={() => setOverlay(null)}
-            />
-          )}
+            {!inLesson && overlay === "settings" && (
+              <SettingsScreen
+                key="settings"
+                progress={progress}
+                onChange={(patch) => update(patch)}
+                onReset={resetAll}
+                onBack={closeOverlay}
+                onSuggest={() => openSuggest()}
+                onRestore={(p) => setProgress(p)}
+              />
+            )}
 
-          {!inLesson && overlay === null && tab === "home" && (
-            <HomeScreen
-              key="home"
-              progress={progress}
-              activeLanguageId={activeLanguageId}
-              onStartLesson={(l) => startLesson(l)}
-              onOpenSettings={() => setOverlay("settings")}
-            />
-          )}
+            {!inLesson && overlay === "review" && (
+              <ReviewScreen key="review" progress={progress} update={update} addXp={addXp} onBack={closeOverlay} />
+            )}
 
-          {!inLesson && overlay === null && tab === "learn" && (
-            <LearnScreen
-              key="learn"
-              progress={progress}
-              activeLanguageId={activeLanguageId}
-              onSelectLanguage={(id) => update({ activeLanguageId: id })}
-              onStartLesson={startLesson}
-            />
-          )}
+            {!inLesson && overlay === "sentences" && (
+              <SentenceBuilderScreen key="sentences" update={update} addXp={addXp} onBack={closeOverlay} />
+            )}
 
-          {!inLesson && overlay === null && tab === "dictionary" && (
-            <DictionaryScreen key="dictionary" initialLanguageId={activeLanguageId} onBackToHome={noop} />
-          )}
+            {!inLesson && overlay === "phrasebook" && (
+              <PhrasebookScreen
+                key="phrasebook"
+                progress={progress}
+                onPractice={(sid) => {
+                  setSpeakStartId(sid);
+                  openOverlay("speak");
+                }}
+                onBack={closeOverlay}
+              />
+            )}
 
-          {!inLesson && overlay === null && tab === "stories" && (
-            <StoriesScreen key="stories" onBackToHome={noop} onOpenGuide={() => goTab("guide")} />
-          )}
+            {!inLesson && overlay === "speak" && <SpeakScreen key="speak" startId={speakStartId} onBack={closeOverlay} />}
 
-          {!inLesson && overlay === null && tab === "guide" && (
-            <SpellingGuideScreen key="guide" onBackToHome={noop} onOpenStories={() => goTab("stories")} />
-          )}
+            {!inLesson && overlay === "placement" && (
+              <PlacementScreen key="placement" languageId={activeLanguageId} update={update} onStartLesson={startLesson} onBack={closeOverlay} />
+            )}
 
-          {!inLesson && overlay === null && tab === "culture" && <BotolanModulesScreen key="culture" onBackToHome={noop} />}
-        </AnimatePresence>
-      </main>
+            {!inLesson && overlay === "suggest" && (
+              <SuggestScreen key="suggest" progress={progress} update={update} preWordId={suggestPre.wordId} onBack={closeOverlay} />
+            )}
 
-      {!inLesson && <BottomNav active={overlay === "settings" ? "home" : tab} onChange={goTab} />}
-    </div>
+            {!inLesson && overlay === null && tab === "home" && (
+              <HomeScreen
+                key="home"
+                progress={progress}
+                activeLanguageId={activeLanguageId}
+                onStartLesson={(l) => startLesson(l)}
+                onOpenSettings={() => openOverlay("settings")}
+                update={update}
+              />
+            )}
+
+            {!inLesson && overlay === null && tab === "learn" && (
+              <LearnScreen
+                key="learn"
+                progress={progress}
+                activeLanguageId={activeLanguageId}
+                onSelectLanguage={(id) => update({ activeLanguageId: id })}
+                onStartLesson={startLesson}
+                onOpen={openOverlay}
+              />
+            )}
+
+            {!inLesson && overlay === null && tab === "dictionary" && (
+              <DictionaryScreen
+                key="dictionary"
+                initialLanguageId={activeLanguageId}
+                progress={progress}
+                update={update}
+                onSuggest={openSuggest}
+                onBackToHome={noop}
+              />
+            )}
+
+            {!inLesson && overlay === null && tab === "stories" && (
+              <StoriesScreen key="stories" onBackToHome={noop} onOpenGuide={() => goTab("guide")} />
+            )}
+
+            {!inLesson && overlay === null && tab === "guide" && (
+              <SpellingGuideScreen key="guide" onBackToHome={noop} onOpenStories={() => goTab("stories")} />
+            )}
+
+            {!inLesson && overlay === null && tab === "culture" && (
+              <CultureScreen key="culture" progress={progress} update={update} />
+            )}
+          </AnimatePresence>
+        </main>
+
+        {!inLesson && <BottomNav active={overlay ? "home" : tab} onChange={goTab} />}
+      </div>
+    </I18nProvider>
   );
 }

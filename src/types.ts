@@ -42,4 +42,25 @@ export interface UserProgress {
   soundOn?: boolean; // sound effects enabled
   activeLanguageId?: number; // last selected language
   updatedAt?: number; // last save timestamp (used to pick the newest copy)
+  favorites?: number[]; // favourite wordIds
+  srs?: Record<number, { box: number; due: string }>; // spaced-review state per wordId
+  reviews?: number; // total flashcards reviewed
+  uiLang?: "en" | "fil"; // interface language
+  reminder?: { on: boolean; hour: number; minute: number };
+  recommendedLesson?: Record<number, number>; // languageId -> lessonId from the placement quiz
+  readModules?: string[]; // culture modules marked as read
+  suggestions?: Suggestion[];
+  lessonLog?: { lessonId: number; date: string }[];
+  recordingsCount?: number;
+  sentencesBuilt?: number;
+}
+
+export interface Suggestion {
+  id: string;
+  kind: "new" | "fix";
+  word: string;
+  meaning: string;
+  note: string;
+  wordId?: number;
+  createdAt: number;
 }

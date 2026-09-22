@@ -33,25 +33,25 @@ const BASE_WORDS: Word[] = [
   {
     wordId: 101,
     languageId: 1,
-    word: "Mahampat a mahambak",
+    word: "Mahampak ya mahambak",
     meaning: "Good morning",
-    pronunciation: "ma-ham-pat a ma-ham-bak",
+    pronunciation: "ma-ham-pak ya ma-ham-bak",
     category: "Greetings"
   },
   {
     wordId: 102,
     languageId: 1,
-    word: "Mahampat a mahilem",
+    word: "Mahampak ya mahilem",
     meaning: "Good afternoon",
-    pronunciation: "ma-ham-pat a ma-hi-lem",
+    pronunciation: "ma-ham-pak ya ma-hi-lem",
     category: "Greetings"
   },
   {
     wordId: 103,
     languageId: 1,
-    word: "Mahampat a yabi",
+    word: "Mahampak ya yabi",
     meaning: "Good evening",
-    pronunciation: "ma-ham-pat a ya-bi",
+    pronunciation: "ma-ham-pak ya ya-bi",
     category: "Greetings"
   },
   {
@@ -76,9 +76,9 @@ const BASE_WORDS: Word[] = [
   {
     wordId: 106,
     languageId: 1,
-    word: "Mahampat ako",
+    word: "Mahampak ako",
     meaning: "I'm fine",
-    pronunciation: "ma-ham-pat a-ko",
+    pronunciation: "ma-ham-pak a-ko",
     category: "Phrases"
   },
   {

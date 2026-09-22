@@ -436,6 +436,12 @@ export default function SpellingGuideScreen({
                       <span className="text-[10px] uppercase font-mono font-bold text-neutral-400 w-14 shrink-0">Final:</span>
                       <span className="text-neutral-700 font-mono">{alpha.final}</span>
                     </div>
+                    {alpha.note && (
+                      <div className="flex items-baseline gap-2 pt-1">
+                        <span className="text-[10px] uppercase font-mono font-bold text-neutral-400 w-14 shrink-0">Sound:</span>
+                        <span className="text-neutral-500 leading-relaxed">{alpha.note}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               );
